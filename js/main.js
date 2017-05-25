@@ -48,10 +48,11 @@
   });
 
   /**
-   * Показывает экран с индексом currentScreen
+   * Показывает экран с индексом screenIndex
+   * @param {number} screenIndex
    */
-  function showScreen() {
-    mainContainerNode.innerHTML = screenTemplates[currentScreen].innerHTML;
+  function showScreen(screenIndex) {
+    mainContainerNode.innerHTML = screenTemplates[screenIndex].innerHTML;
   }
 
   /**
@@ -59,7 +60,7 @@
    */
   function slideToPrevPage() {
     currentScreen = Math.max(0, currentScreen - 1);
-    showScreen();
+    showScreen(currentScreen);
   }
 
   /**
@@ -67,6 +68,6 @@
    */
   function slideToNextPage() {
     currentScreen = Math.min(LAST_SCREEN_INDEX, currentScreen + 1);
-    showScreen();
+    showScreen(currentScreen);
   }
 }());
