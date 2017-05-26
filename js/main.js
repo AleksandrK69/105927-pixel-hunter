@@ -1,5 +1,3 @@
-'use strict';
-
 (function () {
   const mainContainerNode = document.querySelector(`main.central`);
   const screenTemplates = [
