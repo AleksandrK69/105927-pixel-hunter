@@ -1,3 +1,5 @@
+'use strict';
+
 (function () {
   const mainContainerNode = document.querySelector(`main.central`);
   const screenTemplates = [
@@ -24,9 +26,7 @@
   window.addEventListener(`keydown`, ({keyCode}) => {
     if (!isAltPressed) {
       isAltPressed = keyCode === KEY_CODES.alt;
-    }
-
-    if (isAltPressed) {
+    } else {
       switch (keyCode) {
         case KEY_CODES.arrowLeft: {
           slideToPrevPage();
