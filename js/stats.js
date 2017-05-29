@@ -1,10 +1,10 @@
 import createDomElement from './create-dom-element';
-import renderScreen from './render-screen';
-import {introNode} from './intro';
+import backToIntro from './back-to-intro';
 import header from './header';
 import footer from './footer';
 
-export const statsNode = createDomElement(`
+const statsNode = () => {
+  const node = createDomElement(`
 ${header}
 <div class="result">
 <h1>Победа!</h1>
@@ -108,9 +108,8 @@ ${header}
 </div>
 ${footer}
 `);
+  backToIntro(node);
+  return node;
+};
 
-export function addScreenLogic() {
-  document.querySelector(`.back`).addEventListener(`click`, () => {
-    renderScreen(introNode);
-  });
-}
+export default statsNode;

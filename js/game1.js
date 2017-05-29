@@ -1,10 +1,12 @@
 import createDomElement from './create-dom-element';
 import renderScreen from './render-screen';
-import {game2Node, addScreenLogic as addGame2ScreenLogic} from './game2';
+import backToIntro from './back-to-intro';
+import game2Node from './game2';
 import header from './header';
 import footer from './footer';
 
-export const game1Node = createDomElement(`
+const game1Node = () => {
+  const node = createDomElement(`
 ${header}
 <div class="game">
 <p class="game__task">Угадайте для каждого изображения фото или рисунок?</p>
@@ -50,13 +52,17 @@ ${header}
 ${footer}
 `);
 
-export function addScreenLogic() {
-  const form = document.querySelector(`.game__content`);
+  const form = node.querySelector(`.game__content`);
   form.addEventListener(`change`, () => {
     if (form.querySelector(`[name="question1"]:checked`) &&
-      form.querySelector(`[name="question2"]:checked`)) {
-      renderScreen(game2Node);
-      addGame2ScreenLogic();
+        form.querySelector(`[name="question2"]:checked`)) {
+      renderScreen(game2Node());
     }
   });
-}
+
+  backToIntro(node);
+
+  return node;
+};
+
+export default game1Node;

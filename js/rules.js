@@ -1,10 +1,12 @@
 import createDomElement from './create-dom-element';
 import renderScreen from './render-screen';
-import {game1Node, addScreenLogic as addGame1ScreenLogic} from './game1';
+import backToIntro from './back-to-intro';
+import game1Node from './game1';
 import header from './header';
 import footer from './footer';
 
-export const rulesNode = createDomElement(`
+const rulesNode = () => {
+  const node = createDomElement(`
 ${header}
 <div class="rules">
 <h1 class="rules__title">Правила</h1>
@@ -24,9 +26,7 @@ ${header}
 </div>
 ${footer}
 `);
-
-export function addScreenLogic() {
-  const form = document.querySelector(`.rules__form`);
+  const form = node.querySelector(`.rules__form`);
   const submitButton = form.querySelector(`.rules__button`);
   const userNameInput = form.querySelector(`.rules__input`);
 
@@ -40,7 +40,12 @@ export function addScreenLogic() {
 
   form.addEventListener(`submit`, (event) => {
     event.preventDefault();
-    renderScreen(game1Node);
-    addGame1ScreenLogic();
+    renderScreen(game1Node());
   });
-}
+
+  backToIntro(node);
+
+  return node;
+};
+
+export default rulesNode;

@@ -1,5 +1,4 @@
 import renderScreen from './render-screen';
-import {introNode, addScreenLogic} from './intro';
+import introNode from './intro';
 
-renderScreen(introNode);
-addScreenLogic();
+renderScreen(introNode());

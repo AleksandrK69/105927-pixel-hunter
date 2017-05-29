@@ -1,9 +1,10 @@
 import createDomElement from './create-dom-element';
 import renderScreen from './render-screen';
 import footer from './footer';
-import {rulesNode, addScreenLogic as addRulesScreenLogic} from './rules';
+import rulesNode from './rules';
 
-export const greetingNode = createDomElement(`
+const greetingNode = () => {
+  const node = createDomElement(`
 <div class="greeting central--blur">
 <div class="greeting__logo"><img src="img/logo_big.png" width="201" height="89" alt="Pixel Hunter"></div>
 <h1 class="greeting__asterisk">*</h1>
@@ -19,10 +20,10 @@ export const greetingNode = createDomElement(`
 </div>
 ${footer}
 `);
-
-export function addScreenLogic() {
-  document.querySelector(`.greeting__continue`).addEventListener(`click`, () => {
-    renderScreen(rulesNode);
-    addRulesScreenLogic();
+  node.querySelector(`.greeting__continue`).addEventListener(`click`, () => {
+    renderScreen(rulesNode());
   });
-}
+  return node;
+};
+
+export default greetingNode;

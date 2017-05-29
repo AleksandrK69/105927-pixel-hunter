@@ -1,10 +1,12 @@
 import createDomElement from './create-dom-element';
 import renderScreen from './render-screen';
-import {statsNode, addScreenLogic as addStatsScreenLogic} from './stats';
+import backToIntro from './back-to-intro';
+import statsNode from './stats';
 import header from './header';
 import footer from './footer';
 
-export const game3Node = createDomElement(`
+const game3Node = () => {
+  const node = createDomElement(`
 ${header}
   <div class="game">
     <p class="game__task">Найдите рисунок среди изображений</p>
@@ -36,13 +38,16 @@ ${header}
   </div>
   ${footer}
 `);
-
-export function addScreenLogic() {
-  const formOptionNodes = document.querySelectorAll(`.game__option`);
+  const formOptionNodes = node.querySelectorAll(`.game__option`);
   Array.from(formOptionNodes, (optionNode) => {
     optionNode.addEventListener(`click`, () => {
-      renderScreen(statsNode);
-      addStatsScreenLogic();
+      renderScreen(statsNode());
     });
   });
-}
+
+  backToIntro(node);
+
+  return node;
+};
+
+export default game3Node;

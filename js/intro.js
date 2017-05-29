@@ -1,9 +1,10 @@
 import createDomElement from './create-dom-element';
 import renderScreen from './render-screen';
 import footer from './footer';
-import {greetingNode, addScreenLogic as addGreetingScreenLogic} from './greeting';
+import greetingNode from './greeting';
 
-export const introNode = createDomElement(`
+const introNode = () => {
+  const node = createDomElement(`
 <div id="main" class="central__content">
 <div id="intro" class="intro">
   <h1 class="intro__asterisk">*</h1>
@@ -12,10 +13,10 @@ export const introNode = createDomElement(`
 </div>
 ${footer}
 `);
-
-export function addScreenLogic() {
-  document.querySelector(`.intro__asterisk`).addEventListener(`click`, () => {
-    renderScreen(greetingNode);
-    addGreetingScreenLogic();
+  node.querySelector(`.intro__asterisk`).addEventListener(`click`, () => {
+    renderScreen(greetingNode());
   });
-}
+  return node;
+};
+
+export default introNode;
