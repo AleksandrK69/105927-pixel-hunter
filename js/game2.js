@@ -4,47 +4,37 @@ import backToIntro from './back-to-intro';
 import game3Node from './game3';
 import header from './header';
 import footer from './footer';
+import gameStatsHtml from './game-stats';
 
-const formHtml = `
-  <form class="game__content  game__content--wide">
-    <div class="game__option">
-      <img src="http://placehold.it/705x455" alt="Option 1" width="705" height="455">
-      <label class="game__answer  game__answer--photo">
-        <input name="question1" type="radio" value="photo">
-        <span>Фото</span>
-      </label>
-      <label class="game__answer  game__answer--wide  game__answer--paint">
-        <input name="question1" type="radio" value="paint">
-        <span>Рисунок</span>
-      </label>
-    </div>
-  </form>
-`;
+import {initialState} from './data';
 
-const statsHtml = `
-  <div class="stats">
-    <ul class="stats">
-      <li class="stats__result stats__result--wrong"></li>
-      <li class="stats__result stats__result--slow"></li>
-      <li class="stats__result stats__result--fast"></li>
-      <li class="stats__result stats__result--correct"></li>
-      <li class="stats__result stats__result--wrong"></li>
-      <li class="stats__result stats__result--unknown"></li>
-      <li class="stats__result stats__result--slow"></li>
-      <li class="stats__result stats__result--unknown"></li>
-      <li class="stats__result stats__result--fast"></li>
-      <li class="stats__result stats__result--unknown"></li>
-    </ul>
-  </div>
-`;
+const formHtml = (image) => {
+  return `
+    <form class="game__content  game__content--wide">
+      <div class="game__option">
+        <img src="${image}" alt="Option 1" width="705" height="455">
+        <label class="game__answer  game__answer--photo">
+          <input name="question1" type="radio" value="photo">
+          <span>Фото</span>
+        </label>
+        <label class="game__answer  game__answer--wide  game__answer--paint">
+          <input name="question1" type="radio" value="paint">
+          <span>Рисунок</span>
+        </label>
+      </div>
+    </form>
+  `;
+};
 
 const game2Node = () => {
   const node = createDomElement(`
-    ${header}
+    ${header(initialState)}
     <div class="game">
       <p class="game__task">Угадай, фото или рисунок?</p>
-      ${formHtml}
-      ${statsHtml}
+      ${formHtml(...initialState.games[1].images)}
+      <div class="stats">
+        ${gameStatsHtml(initialState.games[1].stats)}
+      </div>
     </div>
     ${footer}
   `);

@@ -4,11 +4,15 @@ import backToIntro from './back-to-intro';
 import game2Node from './game2';
 import header from './header';
 import footer from './footer';
+import gameStatsHtml from './game-stats';
 
-const formHtml = `
+import {initialState} from './data';
+
+const formHtml = ([image1, image2]) => {
+  return `
   <form class="game__content">
     <div class="game__option">
-      <img src="http://placehold.it/468x458" alt="Option 1" width="468" height="458">
+      <img src="${image1}" alt="Option 1" width="468" height="458">
       <label class="game__answer game__answer--photo">
         <input name="question1" type="radio" value="photo">
         <span>Фото</span>
@@ -19,7 +23,7 @@ const formHtml = `
       </label>
     </div>
     <div class="game__option">
-      <img src="http://placehold.it/468x458" alt="Option 2" width="468" height="458">
+      <img src="${image2}" alt="Option 2" width="468" height="458">
       <label class="game__answer  game__answer--photo">
         <input name="question2" type="radio" value="photo">
         <span>Фото</span>
@@ -31,31 +35,17 @@ const formHtml = `
     </div>
   </form>
 `;
-
-const statsHtml = `
-  <div class="stats">
-    <ul class="stats">
-      <li class="stats__result stats__result--wrong"></li>
-      <li class="stats__result stats__result--slow"></li>
-      <li class="stats__result stats__result--fast"></li>
-      <li class="stats__result stats__result--correct"></li>
-      <li class="stats__result stats__result--unknown"></li>
-      <li class="stats__result stats__result--unknown"></li>
-      <li class="stats__result stats__result--unknown"></li>
-      <li class="stats__result stats__result--unknown"></li>
-      <li class="stats__result stats__result--unknown"></li>
-      <li class="stats__result stats__result--unknown"></li>
-    </ul>
-  </div>
-`;
+};
 
 const game1Node = () => {
   const node = createDomElement(`
-    ${header}
+    ${header(initialState)}
     <div class="game">
       <p class="game__task">Угадайте для каждого изображения фото или рисунок?</p>
-      ${formHtml}
-      ${statsHtml}
+      ${formHtml(initialState.games[0].images)}
+      <div class="stats">
+        ${gameStatsHtml(initialState.games[0].stats)}
+      </div>
     </div>
     ${footer}
   `);

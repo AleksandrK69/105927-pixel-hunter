@@ -1,3 +1,5 @@
+import {MAX_LIVES_COUNT} from './constants';
+
 const backAnchorHtml = `
   <div class="header__back">
     <span class="back">
@@ -7,18 +9,25 @@ const backAnchorHtml = `
   </div>
 `;
 
-const timerHtml = `
-  <h1 class="game__timer">NN</h1>
+const emptyLiveHtml = `
+  <img src="img/heart__empty.svg" class="game__heart" alt="Life" width="32" height="32">
 `;
 
-export default `
-  <header class="header">
-    ${backAnchorHtml}
-    ${timerHtml}
-    <div class="game__lives">
-      <img src="img/heart__empty.svg" class="game__heart" alt="Life" width="32" height="32">
-      <img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">
-      <img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">
-    </div>
-    </header>
+const liveHtml = `
+  <img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">
 `;
+
+export default (state) => {
+  return `
+    <header class="header">
+      ${backAnchorHtml}
+      
+      <h1 class="game__timer">${state.time}</h1>
+      
+      <div class="game__lives">
+        ${new Array(MAX_LIVES_COUNT - state.lives).fill(emptyLiveHtml).join(``)}
+      
+        ${new Array(state.lives).fill(liveHtml).join(``)}
+      </div>
+    </header>`;
+};

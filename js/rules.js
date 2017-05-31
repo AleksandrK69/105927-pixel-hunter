@@ -5,6 +5,9 @@ import game1Node from './game1';
 import header from './header';
 import footer from './footer';
 
+import {initialState} from './data';
+import {RULES} from './constants';
+
 const formHtml = `
   <form class="rules__form">
     <input class="rules__input" type="text" placeholder="Ваше Имя">
@@ -13,12 +16,12 @@ const formHtml = `
 `;
 
 const rulesHtml = `
-  <p class="rules__description">Угадай 10 раз для каждого изображения фото <img
+  <p class="rules__description">Угадай ${RULES.attempts} раз для каждого изображения фото <img
     src="img/photo_icon.png" width="16" height="16"> или рисунок <img
     src="img/paint_icon.png" width="16" height="16" alt="">.<br>
     Фотографиями или рисунками могут быть оба изображения.<br>
-    На каждую попытку отводится 30 секунд.<br>
-    Ошибиться можно не более 3 раз.<br>
+    На каждую попытку отводится ${RULES.attemptTime.value} ${RULES.attemptTime.unit}.<br>
+    Ошибиться можно не более ${RULES.maxFailAttempts} раз.<br>
     <br>
     Готовы?
   </p>
@@ -26,7 +29,7 @@ const rulesHtml = `
 
 const rulesNode = () => {
   const node = createDomElement(`
-    ${header}
+    ${header(initialState)}
     <div class="rules">
       <h1 class="rules__title">Правила</h1>
       ${rulesHtml}

@@ -2,121 +2,45 @@ import createDomElement from './create-dom-element';
 import backToIntro from './back-to-intro';
 import header from './header';
 import footer from './footer';
+import gameStatsHtml from './game-stats';
 
-const statsResult1Html = `
-  <table class="result__table">
-    <tr>
-      <td class="result__number">1.</td>
-      <td colspan="2">
-        <ul class="stats">
-          <li class="stats__result stats__result--wrong"></li>
-          <li class="stats__result stats__result--slow"></li>
-          <li class="stats__result stats__result--fast"></li>
-          <li class="stats__result stats__result--correct"></li>
-          <li class="stats__result stats__result--wrong"></li>
-          <li class="stats__result stats__result--unknown"></li>
-          <li class="stats__result stats__result--slow"></li>
-          <li class="stats__result stats__result--unknown"></li>
-          <li class="stats__result stats__result--fast"></li>
-          <li class="stats__result stats__result--unknown"></li>
-        </ul>
-      </td>
-      <td class="result__points">×&nbsp;100</td>
-      <td class="result__total">900</td>
-    </tr>
-    <tr>
-      <td></td>
-      <td class="result__extra">Бонус за скорость:</td>
-      <td class="result__extra">1&nbsp;<span class="stats__result stats__result--fast"></span></td>
-      <td class="result__points">×&nbsp;50</td>
-      <td class="result__total">50</td>
-    </tr>
-    <tr>
-      <td></td>
-      <td class="result__extra">Бонус за жизни:</td>
-      <td class="result__extra">2&nbsp;<span class="stats__result stats__result--heart"></span></td>
-      <td class="result__points">×&nbsp;50</td>
-      <td class="result__total">100</td>
-    </tr>
-    <tr>
-      <td></td>
-      <td class="result__extra">Штраф за медлительность:</td>
-      <td class="result__extra">2&nbsp;<span class="stats__result stats__result--slow"></span></td>
-      <td class="result__points">×&nbsp;50</td>
-      <td class="result__total">-100</td>
-    </tr>
-    <tr>
-      <td colspan="5" class="result__total  result__total--final">950</td>
-    </tr>
-  </table>
-`;
+import {initialState} from './data';
 
-
-const statsResult2Html = `
-  <table class="result__table">
-    <tr>
-      <td class="result__number">2.</td>
-      <td>
-        <ul class="stats">
-          <li class="stats__result stats__result--wrong"></li>
-          <li class="stats__result stats__result--slow"></li>
-          <li class="stats__result stats__result--fast"></li>
-          <li class="stats__result stats__result--correct"></li>
-          <li class="stats__result stats__result--wrong"></li>
-          <li class="stats__result stats__result--unknown"></li>
-          <li class="stats__result stats__result--slow"></li>
-          <li class="stats__result stats__result--wrong"></li>
-          <li class="stats__result stats__result--fast"></li>
-          <li class="stats__result stats__result--wrong"></li>
-        </ul>
-      </td>
-      <td class="result__total"></td>
-      <td class="result__total  result__total--final">fail</td>
-    </tr>
-  </table>
-`;
-const statsResult3Html = `
-  <table class="result__table">
-    <tr>
-      <td class="result__number">3.</td>
-      <td colspan="2">
-        <ul class="stats">
-          <li class="stats__result stats__result--wrong"></li>
-          <li class="stats__result stats__result--slow"></li>
-          <li class="stats__result stats__result--fast"></li>
-          <li class="stats__result stats__result--correct"></li>
-          <li class="stats__result stats__result--wrong"></li>
-          <li class="stats__result stats__result--unknown"></li>
-          <li class="stats__result stats__result--slow"></li>
-          <li class="stats__result stats__result--unknown"></li>
-          <li class="stats__result stats__result--fast"></li>
-          <li class="stats__result stats__result--unknown"></li>
-        </ul>
-      </td>
-      <td class="result__points">×&nbsp;100</td>
-      <td class="result__total">900</td>
-    </tr>
-    <tr>
-      <td></td>
-      <td class="result__extra">Бонус за жизни:</td>
-      <td class="result__extra">2&nbsp;<span class="stats__result stats__result--heart"></span></td>
-      <td class="result__points">×&nbsp;50</td>
-      <td class="result__total">100</td>
-    </tr>
-    <tr>
-      <td colspan="5" class="result__total  result__total--final">950</td>
-    </tr>
-</table>
-`;
+const statsResultHtml = ({gameNumber, stats, pointsMultiply, totalPoints, bonuses, totalResult: {success, score}}) => {
+  return `
+    <table class="result__table">
+      <tr>
+        <td class="result__number">${gameNumber}.</td>
+        <td colspan="2">${gameStatsHtml(stats)}</td>
+        <td class="result__points">${pointsMultiply ? `× ${pointsMultiply}` : ``}</td>
+        <td class="result__total">${totalPoints}</td>
+      </tr>
+      ${[...bonuses].map(({name, shortName, count, points, total}) => {
+        return `
+          <tr>
+            <td></td>
+            <td class="result__extra">${name}:</td>
+            <td class="result__extra">${count}&nbsp;<span class="stats__result stats__result--${shortName}"></span></td>
+            <td class="result__points">×&nbsp;${points}</td>
+            <td class="result__total">${total}</td>
+          </tr>
+        `;
+      }).join(``)}
+      <tr>
+        <td colspan="5" class="result__total  result__total--final">${success ? score : `FAIL`}</td>
+      </tr>
+    </table>
+  `;
+};
 
 const statsNode = () => {
   const node = createDomElement(`
-    ${header}
+    ${header(initialState)}
     <div class="result">
       <h1>Победа!</h1>
-      ${statsResult1Html}
-      ${statsResult2Html}
-      ${statsResult3Html}
+      ${[...initialState.games].map((gameData) => {
+        return statsResultHtml(gameData);
+      }).join(``)}
     </div>
     ${footer}
   `);
