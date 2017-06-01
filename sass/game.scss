@@ -36,6 +36,10 @@
 }
 
 .game__option {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   position: relative;
   border: 10px solid transparent;
 
@@ -45,6 +49,13 @@
 
   text-align: center;
   vertical-align: middle;
+}
+
+.game__option img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
 }
 
 .game__answer input {

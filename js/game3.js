@@ -4,40 +4,39 @@ import backToIntro from './back-to-intro';
 import statsNode from './stats';
 import header from './header';
 import footer from './footer';
+import gameStatsHtml from './game-stats';
+
+import {initialState} from './data';
+
+const formHtml = ([image1, image2, image3]) => {
+  return `
+    <form class="game__content  game__content--triple">
+      <div class="game__option">
+        <img src="${image1}" alt="Option 1" width="304" height="455">
+      </div>
+      <div class="game__option  game__option--selected">
+        <img src="${image2}" alt="Option 1" width="304" height="455">
+      </div>
+      <div class="game__option">
+        <img src="${image3}" alt="Option 1" width="304" height="455">
+      </div>
+    </form>
+  `;
+};
 
 const game3Node = () => {
   const node = createDomElement(`
-${header}
-  <div class="game">
-    <p class="game__task">Найдите рисунок среди изображений</p>
-    <form class="game__content  game__content--triple">
-      <div class="game__option">
-        <img src="http://placehold.it/304x455" alt="Option 1" width="304" height="455">
+    ${header(initialState)}
+    <div class="game">
+      <p class="game__task">Найдите рисунок среди изображений</p>
+      ${formHtml(initialState.games[2].images)}
+      <div class="stats">
+        ${gameStatsHtml(initialState.games[2].stats)}
       </div>
-      <div class="game__option  game__option--selected">
-        <img src="http://placehold.it/304x455" alt="Option 1" width="304" height="455">
-      </div>
-      <div class="game__option">
-        <img src="http://placehold.it/304x455" alt="Option 1" width="304" height="455">
-      </div>
-    </form>
-    <div class="stats">
-      <ul class="stats">
-        <li class="stats__result stats__result--wrong"></li>
-        <li class="stats__result stats__result--slow"></li>
-        <li class="stats__result stats__result--fast"></li>
-        <li class="stats__result stats__result--correct"></li>
-        <li class="stats__result stats__result--wrong"></li>
-        <li class="stats__result stats__result--unknown"></li>
-        <li class="stats__result stats__result--slow"></li>
-        <li class="stats__result stats__result--unknown"></li>
-        <li class="stats__result stats__result--fast"></li>
-        <li class="stats__result stats__result--unknown"></li>
-      </ul>
     </div>
-  </div>
-  ${footer}
-`);
+    ${footer}
+  `);
+
   const formOptionNodes = node.querySelectorAll(`.game__option`);
   Array.from(formOptionNodes, (optionNode) => {
     optionNode.addEventListener(`click`, () => {
