@@ -42,3 +42,22 @@ export const QUESTIONS_TITLES = {
   [QUESTION_TYPES.photoOrPic]: `Угадай, фото или рисунок?`,
   [QUESTION_TYPES.findPic]: `Найдите рисунок среди изображений`
 };
+
+export const ANSWERS_TYPES = {
+  photo: `photo`,
+  paint: `paint`,
+};
+
+export const ANSWERS_VALUES = {
+  correct: `correct`,
+  wrong: `wrong`,
+  fast: `fast`,
+  slow: `slow`
+};
+
+export const ANSWERS_COST = {
+  [ANSWERS_VALUES.correct]: 100,
+  [ANSWERS_VALUES.wrong]: 0,
+  [ANSWERS_VALUES.fast]: 150,
+  [ANSWERS_VALUES.slow]: 50
+};

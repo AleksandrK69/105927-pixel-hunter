@@ -25,7 +25,7 @@ const rulesHtml = `
   </p>
 `;
 
-const rulesNode = (state) => {
+const rulesNode = (state, answers) => {
   const node = createDomElement(`
     ${header(state)}
     <div class="rules">
@@ -53,7 +53,7 @@ const rulesNode = (state) => {
 
     state.timer.stop();
     state.timer.start();
-    renderScreen(gameNode(state));
+    renderScreen(gameNode(state, answers));
   });
 
   backToIntro(node, state);

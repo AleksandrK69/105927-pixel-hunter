@@ -7,9 +7,9 @@ import * as questionChooseType from './question-choose-type';
 import * as questionFindPic from './question-find-pic';
 import * as questionPhotoOrPic from './question-photo-or-pic';
 import statsNode from './stats';
-import {setLevel} from './data/state';
+import {setLevel, setLives} from './data/state';
 import questions from './data/questions';
-import statistic from './data/statistic';
+import {addAnswer, getAnswerValue} from './data/answers';
 
 import {QUESTIONS_TITLES, QUESTION_TYPES, LEVELS_COUNT} from './constants';
 
@@ -19,10 +19,29 @@ const QUESTIONS_ACTIONS = {
   [QUESTION_TYPES.photoOrPic]: questionPhotoOrPic
 };
 
-const gameNode = (state) => {
+const gameNode = (state, answers) => {
   const {level, timer, lives} = state;
   const {askQuestion, addBehaviour} = QUESTIONS_ACTIONS[questions[level].type];
-  const shortStatForStep = statistic[level - 1] ? statistic[level - 1].shortStatistic : [];
+
+  const levelStartTime = timer.getTimer();
+
+  const goToNextStep = (isCorrectAnswer) => {
+    const levelTime = timer.getTimer() - levelStartTime;
+    const nextStep = level + 1;
+    const currentAnswers = addAnswer(answers, getAnswerValue(isCorrectAnswer, levelTime));
+
+    // если ответ неправильный - снимается жизнь
+    const currentState = !isCorrectAnswer ? setLives(state, state.lives - 1) : state;
+
+    if (currentState.lives !== 0 && nextStep < LEVELS_COUNT) {
+      // если возможен переход на следующий шаг - игра продолжается
+      return gameNode(setLevel(currentState, nextStep), currentAnswers);
+    } else {
+      // если игра закончилась - останавливается таймер и показывается статистика
+      timer.stop();
+      return statsNode(currentState, currentAnswers);
+    }
+  };
 
   const node = createDomElement(`
     ${header({timer, lives})}
@@ -30,21 +49,18 @@ const gameNode = (state) => {
       <p class="game__task">${QUESTIONS_TITLES[questions[level].type]}</p>
       ${askQuestion(...questions[level].images)}
       <div class="stats">
-        ${gameStatsHtml(shortStatForStep)}
+        ${gameStatsHtml(answers)}
       </div>
     </div>
     ${footer}
   `);
 
-  addBehaviour(node, () => {
-    const nextStep = level + 1;
-    if (nextStep < LEVELS_COUNT) {
-      return gameNode(setLevel(state, nextStep));
-    }
-
-    timer.stop();
-    return statsNode(state);
-  });
+  addBehaviour(
+      node,
+      goToNextStep,
+      questions[level].correctAnswer,
+      answers
+  );
 
   backToIntro(node, state);
   return node;

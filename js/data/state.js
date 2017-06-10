@@ -59,25 +59,3 @@ export const setTimer = (currentState, timer) => {
   newState.timer = timer;
   return newState;
 };
-
-// /**
-//  * Очищает таймер игры
-//  * @param {number} timerInterval
-//  */
-// export const stopTimer = ({timerInterval}) => {
-//   clearInterval(timerInterval);
-// };
-//
-// /**
-//  * Запускает таймер игры
-//  * @param {object} currentState
-//  * @return {object} - новое состояние игры
-//  */
-// export const startTimer = (currentState) => {
-//   stopTimer(currentState);
-//   setTimer(currentState, 0);
-//
-//   // return setInterval(() => {
-//    return setTimer(currentState, currentState.timer + 1);
-//   // }, 1000);
-// };

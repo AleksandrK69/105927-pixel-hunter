@@ -23,11 +23,13 @@ export function askQuestion(image) {
   `;
 }
 
-export function addBehaviour(node, nextScreen) {
+export function addBehaviour(node, nextScreen, correctAnswer, answers) {
   const form = node.querySelector(`.game__content`);
   form.addEventListener(`change`, () => {
-    if (form.querySelector(`[name="question1"]:checked`)) {
-      renderScreen(nextScreen());
+    const answerNode = form.querySelector(`[name="question1"]:checked`);
+    if (answerNode) {
+      const isCorrectAnswer = answerNode.value === correctAnswer;
+      renderScreen(nextScreen(isCorrectAnswer));
     }
   });
 }

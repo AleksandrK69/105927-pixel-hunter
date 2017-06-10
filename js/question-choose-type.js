@@ -35,12 +35,14 @@ export function askQuestion(image1, image2) {
   `;
 }
 
-export function addBehaviour(node, nextScreen) {
+export function addBehaviour(node, nextScreen, correctAnswer, answers) {
   const form = node.querySelector(`.game__content`);
   form.addEventListener(`change`, () => {
-    if (form.querySelector(`[name="question1"]:checked`) &&
-        form.querySelector(`[name="question2"]:checked`)) {
-      renderScreen(nextScreen());
+    const answer1 = form.querySelector(`[name="question1"]:checked`);
+    const answer2 = form.querySelector(`[name="question2"]:checked`);
+    if (answer1 && answer2) {
+      const isCorrectAnswer = correctAnswer[0] === answer1.value && correctAnswer[1] === answer2.value;
+      renderScreen(nextScreen(isCorrectAnswer));
     }
   });
 }

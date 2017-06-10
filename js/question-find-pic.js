@@ -23,11 +23,12 @@ export function askQuestion(image1, image2, image3) {
   `;
 }
 
-export function addBehaviour(node, nextScreen) {
+export function addBehaviour(node, nextScreen, correctAnswer, answers) {
   const formOptionNodes = node.querySelectorAll(`.game__option`);
-  Array.from(formOptionNodes, (optionNode) => {
+  Array.from(formOptionNodes, (optionNode, index) => {
     optionNode.addEventListener(`click`, () => {
-      renderScreen(nextScreen());
+      const isCorrectAnswer = index === correctAnswer;
+      renderScreen(nextScreen(isCorrectAnswer));
     });
   });
 }
