@@ -1,4 +1,4 @@
-import {QUESTIONS_COUNT} from './constants';
+import {LEVELS_COUNT} from './constants';
 
 const unknownResultStats = `<li class="stats__result stats__result--unknown"></li>`;
 
@@ -9,7 +9,7 @@ export default (data) => {
         return `<li class="stats__result stats__result--${result}"></li>`;
       }).join(``)}
       
-      ${new Array(QUESTIONS_COUNT - data.length).fill(unknownResultStats).join(``)}
+      ${new Array(LEVELS_COUNT - data.length).fill(unknownResultStats).join(``)}
     </ul>
   `;
 };

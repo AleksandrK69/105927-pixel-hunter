@@ -4,7 +4,7 @@ import header from './header';
 import footer from './footer';
 import gameStatsHtml from './game-stats';
 
-import {initialState} from './data';
+import statistic from './data/statistic';
 
 const statsResultHtml = ({shortStatistic, pointsMultiply, totalPoints, bonuses, totalResult: {success, score}}, index) => {
   return `
@@ -33,19 +33,19 @@ const statsResultHtml = ({shortStatistic, pointsMultiply, totalPoints, bonuses, 
   `;
 };
 
-const statsNode = () => {
+const statsNode = (state) => {
   const node = createDomElement(`
-    ${header(initialState)}
+    ${header(state)}
     <div class="result">
       <h1>Победа!</h1>
-      ${[...initialState.statistic].map((gameData, index) => {
+      ${statistic.map((gameData, index) => {
         return statsResultHtml(gameData, index);
       }).join(``)}
     </div>
     ${footer}
   `);
 
-  backToIntro(node);
+  backToIntro(node, state);
 
   return node;
 };

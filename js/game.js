@@ -7,8 +7,11 @@ import * as questionChooseType from './question-choose-type';
 import * as questionFindPic from './question-find-pic';
 import * as questionPhotoOrPic from './question-photo-or-pic';
 import statsNode from './stats';
+import {setLevel} from './data/state';
+import questions from './data/questions';
+import statistic from './data/statistic';
 
-import {QUESTIONS_TITLES, QUESTION_TYPES} from './constants';
+import {QUESTIONS_TITLES, QUESTION_TYPES, LEVELS_COUNT} from './constants';
 
 const QUESTIONS_ACTIONS = {
   [QUESTION_TYPES.chooseType]: questionChooseType,
@@ -16,16 +19,16 @@ const QUESTIONS_ACTIONS = {
   [QUESTION_TYPES.photoOrPic]: questionPhotoOrPic
 };
 
-const gameNode = (game, currentStep) => {
-  const {questions, statistic} = game;
-  const {askQuestion, addBehaviour} = QUESTIONS_ACTIONS[questions[currentStep].type];
-  const shortStatForStep = statistic[currentStep - 1] ? statistic[currentStep - 1].shortStatistic : [];
+const gameNode = (state) => {
+  const {level, timer, lives} = state;
+  const {askQuestion, addBehaviour} = QUESTIONS_ACTIONS[questions[level].type];
+  const shortStatForStep = statistic[level - 1] ? statistic[level - 1].shortStatistic : [];
 
   const node = createDomElement(`
-    ${header(game)}
+    ${header({timer, lives})}
     <div class="game">
-      <p class="game__task">${QUESTIONS_TITLES[questions[currentStep].type]}</p>
-      ${askQuestion(...questions[currentStep].images)}
+      <p class="game__task">${QUESTIONS_TITLES[questions[level].type]}</p>
+      ${askQuestion(...questions[level].images)}
       <div class="stats">
         ${gameStatsHtml(shortStatForStep)}
       </div>
@@ -34,14 +37,16 @@ const gameNode = (game, currentStep) => {
   `);
 
   addBehaviour(node, () => {
-    const nextStep = currentStep + 1;
-    if (nextStep >= questions.length) {
-      return statsNode();
+    const nextStep = level + 1;
+    if (nextStep < LEVELS_COUNT) {
+      return gameNode(setLevel(state, nextStep));
     }
-    return gameNode(game, nextStep);
+
+    timer.stop();
+    return statsNode(state);
   });
 
-  backToIntro(node);
+  backToIntro(node, state);
   return node;
 };
 

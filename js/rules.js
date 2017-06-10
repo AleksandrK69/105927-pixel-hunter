@@ -4,8 +4,6 @@ import backToIntro from './back-to-intro';
 import gameNode from './game';
 import header from './header';
 import footer from './footer';
-
-import {initialState} from './data';
 import {RULES} from './constants';
 
 const formHtml = `
@@ -27,9 +25,9 @@ const rulesHtml = `
   </p>
 `;
 
-const rulesNode = () => {
+const rulesNode = (state) => {
   const node = createDomElement(`
-    ${header(initialState)}
+    ${header(state)}
     <div class="rules">
       <h1 class="rules__title">Правила</h1>
       ${rulesHtml}
@@ -52,10 +50,13 @@ const rulesNode = () => {
 
   form.addEventListener(`submit`, (event) => {
     event.preventDefault();
-    renderScreen(gameNode(initialState, 0));
+
+    state.timer.stop();
+    state.timer.start();
+    renderScreen(gameNode(state));
   });
 
-  backToIntro(node);
+  backToIntro(node, state);
 
   return node;
 };

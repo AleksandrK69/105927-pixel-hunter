@@ -7,9 +7,9 @@ export const RULES = {
   }
 };
 
-export const QUESTIONS_COUNT = 10;
+export const LEVELS_COUNT = 10;
 
-export const MAX_LIVES_COUNT = 3;
+export const LIVES_COUNT = 3;
 
 export const ESTABLISH_YEAR = 2017;
 

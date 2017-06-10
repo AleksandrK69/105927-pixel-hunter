@@ -2,6 +2,9 @@ import createDomElement from './create-dom-element';
 import renderScreen from './render-screen';
 import footer from './footer';
 import greetingNode from './greeting';
+import {timer} from './timer';
+import {state, setTimer} from './data/state';
+import handleTimer from './timer-handler';
 
 const introNode = () => {
   const node = createDomElement(`
@@ -14,8 +17,12 @@ const introNode = () => {
     ${footer}
   `);
   node.querySelector(`.intro__asterisk`).addEventListener(`click`, () => {
-    renderScreen(greetingNode());
+    const initState = setTimer(state, timer());
+    renderScreen(greetingNode(initState));
   });
+
+  handleTimer();
+
   return node;
 };
 
