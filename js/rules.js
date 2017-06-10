@@ -1,7 +1,7 @@
 import createDomElement from './create-dom-element';
 import renderScreen from './render-screen';
 import backToIntro from './back-to-intro';
-import game1Node from './game1';
+import gameNode from './game';
 import header from './header';
 import footer from './footer';
 
@@ -52,7 +52,7 @@ const rulesNode = () => {
 
   form.addEventListener(`submit`, (event) => {
     event.preventDefault();
-    renderScreen(game1Node());
+    renderScreen(gameNode(initialState, 0));
   });
 
   backToIntro(node);

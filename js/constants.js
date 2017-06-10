@@ -7,6 +7,8 @@ export const RULES = {
   }
 };
 
+export const QUESTIONS_COUNT = 10;
+
 export const MAX_LIVES_COUNT = 3;
 
 export const ESTABLISH_YEAR = 2017;
@@ -28,3 +30,15 @@ export const SOCIAL_GROUPS = [{
   link: `https://vk.com/htmlacademy`,
   shortName: `vk`
 }];
+
+export const QUESTION_TYPES = {
+  chooseType: `chooseType`,
+  findPic: `findPic`,
+  photoOrPic: `photoOrPic`
+};
+
+export const QUESTIONS_TITLES = {
+  [QUESTION_TYPES.chooseType]: `Угадайте для каждого изображения фото или рисунок?`,
+  [QUESTION_TYPES.photoOrPic]: `Угадай, фото или рисунок?`,
+  [QUESTION_TYPES.findPic]: `Найдите рисунок среди изображений`
+};

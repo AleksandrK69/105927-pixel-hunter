@@ -1,14 +1,11 @@
-import createDomElement from './create-dom-element';
 import renderScreen from './render-screen';
-import backToIntro from './back-to-intro';
-import game3Node from './game3';
-import header from './header';
-import footer from './footer';
-import gameStatsHtml from './game-stats';
 
-import {initialState} from './data';
-
-const formHtml = (image) => {
+/**
+ * Тип вопроса, когда нужно угадать, фото или рисунок
+ * @param {string} image - url изображения
+ * @return {string}
+ */
+export function askQuestion(image) {
   return `
     <form class="game__content  game__content--wide">
       <div class="game__option">
@@ -24,31 +21,13 @@ const formHtml = (image) => {
       </div>
     </form>
   `;
-};
+}
 
-const game2Node = () => {
-  const node = createDomElement(`
-    ${header(initialState)}
-    <div class="game">
-      <p class="game__task">Угадай, фото или рисунок?</p>
-      ${formHtml(...initialState.games[1].images)}
-      <div class="stats">
-        ${gameStatsHtml(initialState.games[1].stats)}
-      </div>
-    </div>
-    ${footer}
-  `);
-
+export function addBehaviour(node, nextScreen) {
   const form = node.querySelector(`.game__content`);
   form.addEventListener(`change`, () => {
     if (form.querySelector(`[name="question1"]:checked`)) {
-      renderScreen(game3Node());
+      renderScreen(nextScreen());
     }
   });
-
-  backToIntro(node);
-
-  return node;
-};
-
-export default game2Node;
+}

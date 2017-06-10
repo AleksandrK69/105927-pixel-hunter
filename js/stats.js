@@ -6,12 +6,12 @@ import gameStatsHtml from './game-stats';
 
 import {initialState} from './data';
 
-const statsResultHtml = ({gameNumber, stats, pointsMultiply, totalPoints, bonuses, totalResult: {success, score}}) => {
+const statsResultHtml = ({shortStatistic, pointsMultiply, totalPoints, bonuses, totalResult: {success, score}}, index) => {
   return `
     <table class="result__table">
       <tr>
-        <td class="result__number">${gameNumber}.</td>
-        <td colspan="2">${gameStatsHtml(stats)}</td>
+        <td class="result__number">${index + 1}.</td>
+        <td colspan="2">${gameStatsHtml(shortStatistic)}</td>
         <td class="result__points">${pointsMultiply ? `× ${pointsMultiply}` : ``}</td>
         <td class="result__total">${totalPoints}</td>
       </tr>
@@ -38,8 +38,8 @@ const statsNode = () => {
     ${header(initialState)}
     <div class="result">
       <h1>Победа!</h1>
-      ${[...initialState.games].map((gameData) => {
-        return statsResultHtml(gameData);
+      ${[...initialState.statistic].map((gameData, index) => {
+        return statsResultHtml(gameData, index);
       }).join(``)}
     </div>
     ${footer}
