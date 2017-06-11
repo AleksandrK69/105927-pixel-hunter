@@ -4,12 +4,13 @@ import header from './header';
 import footer from './footer';
 import gameStatsHtml from './game-stats';
 
-import statistic from './data/statistic';
+import {calculateStatistic, addGameStatistic, getGameStatistic} from './data/statistic';
 
-const statsResultHtml = (answers, {pointsMultiply, totalPoints, bonuses, totalResult: {success, score}}) => {
+const statsResultHtml = ({answers, pointsMultiply, totalPoints, bonuses, totalResult: {success, score}}, index) => {
   return `
     <table class="result__table">
       <tr>
+        <td>${index + 1}</td>
         <td colspan="2">${gameStatsHtml(answers)}</td>
         <td class="result__points">${pointsMultiply ? `× ${pointsMultiply}` : `&mdash;`}</td>
         <td class="result__total">${totalPoints}</td>
@@ -17,6 +18,7 @@ const statsResultHtml = (answers, {pointsMultiply, totalPoints, bonuses, totalRe
       ${[...bonuses].map(({name, shortName, count, points, total}) => {
         return `
           <tr>
+            <td></td>
             <td class="result__extra">${name}:</td>
             <td class="result__extra">${count}&nbsp;<span class="stats__result stats__result--${shortName}"></span></td>
             <td class="result__points">×&nbsp;${points}</td>
@@ -25,18 +27,24 @@ const statsResultHtml = (answers, {pointsMultiply, totalPoints, bonuses, totalRe
         `;
       }).join(``)}
       <tr>
-        <td colspan="4" class="result__total  result__total--final">${success ? score : `FAIL`}</td>
+        <td colspan="5" class="result__total  result__total--final">${success ? score : `FAIL`}</td>
       </tr>
     </table>
   `;
 };
 
 const statsNode = (state, answers) => {
+  const statistic = calculateStatistic(state, answers);
+  addGameStatistic(statistic);
+  const allGamesStatistic = getGameStatistic();
+
   const node = createDomElement(`
     ${header(state)}
     <div class="result">
-      <h1>Победа!</h1>
-      ${statsResultHtml(answers, statistic)}
+      <h1>${statistic.totalResult.success ? `Победа!` : `Вы проиграли`}</h1>
+      ${allGamesStatistic.map((currentStatistic, index) => {
+        return statsResultHtml(currentStatistic, index);
+      }).join(``)}
     </div>
     ${footer}
   `);

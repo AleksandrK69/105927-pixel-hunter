@@ -33,7 +33,7 @@ const gameNode = (state, answers) => {
     // если ответ неправильный - снимается жизнь
     const currentState = !isCorrectAnswer ? setLives(state, state.lives - 1) : state;
 
-    if (currentState.lives !== 0 && nextStep < LEVELS_COUNT) {
+    if (currentState.lives > 0 && nextStep < LEVELS_COUNT) {
       // если возможен переход на следующий шаг - игра продолжается
       return gameNode(setLevel(currentState, nextStep), currentAnswers);
     } else {

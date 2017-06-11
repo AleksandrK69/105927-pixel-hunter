@@ -55,9 +55,10 @@ export const ANSWERS_VALUES = {
   slow: `slow`
 };
 
-export const ANSWERS_COST = {
+export const BONUSES_COST = {
   [ANSWERS_VALUES.correct]: 100,
   [ANSWERS_VALUES.wrong]: 0,
-  [ANSWERS_VALUES.fast]: 150,
-  [ANSWERS_VALUES.slow]: 50
+  [ANSWERS_VALUES.fast]: 50,
+  [ANSWERS_VALUES.slow]: -50,
+  lives: 50
 };
