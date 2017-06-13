@@ -4,10 +4,15 @@ export const timer = () => {
   let value = 0;
 
   return {
-    start: () => {
+    start: (timerValue) => {
+      value = timerValue;
       timerId = setInterval(() => {
-        value = value + 1;
-        const event = new CustomEvent(`timerUpdate`, {detail: {timer: value}});
+        value = value - 1;
+
+        const event = value > 0 ?
+            new CustomEvent(`timerUpdate`, {detail: {timer: value}}) :
+            new CustomEvent(`timerStop`);
+
         document.dispatchEvent(event);
       }, interval);
     },

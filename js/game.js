@@ -1,5 +1,6 @@
 import createDomElement from './create-dom-element';
 import backToIntro from './back-to-intro';
+import renderScreen from './render-screen';
 import header from './header';
 import footer from './footer';
 import gameStatsHtml from './game-stats';
@@ -11,7 +12,7 @@ import {setLevel, setLives} from './data/state';
 import questions from './data/questions';
 import {addAnswer, getAnswerValue} from './data/answers';
 
-import {QUESTIONS_TITLES, QUESTION_TYPES, LEVELS_COUNT} from './constants';
+import {QUESTIONS_TITLES, QUESTION_TYPES, LEVELS_COUNT, TIME_TO_GAME} from './constants';
 
 const QUESTIONS_ACTIONS = {
   [QUESTION_TYPES.chooseType]: questionChooseType,
@@ -23,10 +24,12 @@ const gameNode = (state, answers) => {
   const {level, timer, lives} = state;
   const {askQuestion, addBehaviour} = QUESTIONS_ACTIONS[questions[level].type];
 
-  const levelStartTime = timer.getTimer();
+  // запуск займера на игру
+  state.timer.stop();
+  state.timer.start(TIME_TO_GAME);
 
   const goToNextStep = (isCorrectAnswer) => {
-    const levelTime = timer.getTimer() - levelStartTime;
+    const levelTime = TIME_TO_GAME - timer.getTimer();
     const nextStep = level + 1;
     const currentAnswers = addAnswer(answers, getAnswerValue(isCorrectAnswer, levelTime));
 
@@ -39,9 +42,15 @@ const gameNode = (state, answers) => {
     } else {
       // если игра закончилась - останавливается таймер и показывается статистика
       timer.stop();
+      timer.clear();
       return statsNode(currentState, currentAnswers);
     }
   };
+
+  document.addEventListener(`timerStop`, () => {
+    // При остановке засчитывается неправильный ответ
+    renderScreen(goToNextStep(false));
+  });
 
   const node = createDomElement(`
     ${header({timer, lives})}

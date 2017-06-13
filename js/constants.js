@@ -1,12 +1,3 @@
-export const RULES = {
-  attempts: 10,
-  maxFailAttempts: 3,
-  attemptTime: {
-    value: 30,
-    unit: `секунд`
-  }
-};
-
 export const LEVELS_COUNT = 10;
 
 export const LIVES_COUNT = 3;
@@ -62,3 +53,5 @@ export const BONUSES_COST = {
   [ANSWERS_VALUES.slow]: -50,
   lives: 50
 };
+
+export const TIME_TO_GAME = 30;
