@@ -1,12 +1,10 @@
 import createDomElement from './create-dom-element';
 import renderScreen from './render-screen';
 import backToIntro from './back-to-intro';
-import game1Node from './game1';
+import gameNode from './game';
 import header from './header';
 import footer from './footer';
-
-import {initialState} from './data';
-import {RULES} from './constants';
+import {LEVELS_COUNT, TIME_TO_GAME, LIVES_COUNT} from './constants';
 
 const formHtml = `
   <form class="rules__form">
@@ -16,20 +14,20 @@ const formHtml = `
 `;
 
 const rulesHtml = `
-  <p class="rules__description">Угадай ${RULES.attempts} раз для каждого изображения фото <img
+  <p class="rules__description">Угадай ${LEVELS_COUNT} раз для каждого изображения фото <img
     src="img/photo_icon.png" width="16" height="16"> или рисунок <img
     src="img/paint_icon.png" width="16" height="16" alt="">.<br>
     Фотографиями или рисунками могут быть оба изображения.<br>
-    На каждую попытку отводится ${RULES.attemptTime.value} ${RULES.attemptTime.unit}.<br>
-    Ошибиться можно не более ${RULES.maxFailAttempts} раз.<br>
+    На каждую попытку отводится ${TIME_TO_GAME} секунд.<br>
+    Ошибиться можно не более ${LIVES_COUNT} раз.<br>
     <br>
     Готовы?
   </p>
 `;
 
-const rulesNode = () => {
+const rulesNode = (state, answers) => {
   const node = createDomElement(`
-    ${header(initialState)}
+    ${header(state)}
     <div class="rules">
       <h1 class="rules__title">Правила</h1>
       ${rulesHtml}
@@ -52,10 +50,11 @@ const rulesNode = () => {
 
   form.addEventListener(`submit`, (event) => {
     event.preventDefault();
-    renderScreen(game1Node());
+
+    renderScreen(gameNode(state, answers));
   });
 
-  backToIntro(node);
+  backToIntro(node, state);
 
   return node;
 };

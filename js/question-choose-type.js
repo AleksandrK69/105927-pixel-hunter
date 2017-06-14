@@ -1,14 +1,12 @@
-import createDomElement from './create-dom-element';
 import renderScreen from './render-screen';
-import backToIntro from './back-to-intro';
-import game2Node from './game2';
-import header from './header';
-import footer from './footer';
-import gameStatsHtml from './game-stats';
 
-import {initialState} from './data';
-
-const formHtml = ([image1, image2]) => {
+/**
+ * Тип вопроса, когда нужно выбрать для каждого изображения фото или рисунок?
+ * @param {string} image1 - url изображения
+ * @param {string} image2 - url изображения
+ * @return {string}
+ */
+export function askQuestion(image1, image2) {
   return `
   <form class="game__content">
     <div class="game__option">
@@ -34,33 +32,17 @@ const formHtml = ([image1, image2]) => {
       </label>
     </div>
   </form>
-`;
-};
+  `;
+}
 
-const game1Node = () => {
-  const node = createDomElement(`
-    ${header(initialState)}
-    <div class="game">
-      <p class="game__task">Угадайте для каждого изображения фото или рисунок?</p>
-      ${formHtml(initialState.games[0].images)}
-      <div class="stats">
-        ${gameStatsHtml(initialState.games[0].stats)}
-      </div>
-    </div>
-    ${footer}
-  `);
-
+export function addBehaviour(node, nextScreen, correctAnswer, answers) {
   const form = node.querySelector(`.game__content`);
   form.addEventListener(`change`, () => {
-    if (form.querySelector(`[name="question1"]:checked`) &&
-        form.querySelector(`[name="question2"]:checked`)) {
-      renderScreen(game2Node());
+    const answer1 = form.querySelector(`[name="question1"]:checked`);
+    const answer2 = form.querySelector(`[name="question2"]:checked`);
+    if (answer1 && answer2) {
+      const isCorrectAnswer = correctAnswer[0] === answer1.value && correctAnswer[1] === answer2.value;
+      renderScreen(nextScreen(isCorrectAnswer));
     }
   });
-
-  backToIntro(node);
-
-  return node;
-};
-
-export default game1Node;
+}

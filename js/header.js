@@ -1,4 +1,4 @@
-import {MAX_LIVES_COUNT} from './constants';
+import {LIVES_COUNT} from './constants';
 
 const backAnchorHtml = `
   <div class="header__back">
@@ -17,17 +17,17 @@ const liveHtml = `
   <img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">
 `;
 
-export default (state) => {
+export default ({timer, lives}) => {
   return `
     <header class="header">
       ${backAnchorHtml}
       
-      <h1 class="game__timer">${state.time}</h1>
+      <h1 class="game__timer">${timer.getTimer()}</h1>
       
       <div class="game__lives">
-        ${new Array(MAX_LIVES_COUNT - state.lives).fill(emptyLiveHtml).join(``)}
+        ${new Array(LIVES_COUNT - lives).fill(emptyLiveHtml).join(``)}
       
-        ${new Array(state.lives).fill(liveHtml).join(``)}
+        ${new Array(lives).fill(liveHtml).join(``)}
       </div>
     </header>`;
 };

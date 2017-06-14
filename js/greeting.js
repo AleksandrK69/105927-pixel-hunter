@@ -22,7 +22,7 @@ const nextArrowHtml = `
   <div class="greeting__continue"><span><img src="img/arrow_right.svg" width="64" height="64" alt="Next"></span></div>
 `;
 
-const greetingNode = () => {
+const greetingNode = (state, answers) => {
   const node = createDomElement(`
     <div class="greeting central--blur">
       ${logoHtml}
@@ -34,7 +34,7 @@ const greetingNode = () => {
   `);
 
   node.querySelector(`.greeting__continue`).addEventListener(`click`, () => {
-    renderScreen(rulesNode());
+    renderScreen(rulesNode(state, answers));
   });
 
   return node;

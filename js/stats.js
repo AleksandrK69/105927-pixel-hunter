@@ -4,15 +4,15 @@ import header from './header';
 import footer from './footer';
 import gameStatsHtml from './game-stats';
 
-import {initialState} from './data';
+import {calculateStatistic, addGameStatistic, getGameStatistic} from './data/statistic';
 
-const statsResultHtml = ({gameNumber, stats, pointsMultiply, totalPoints, bonuses, totalResult: {success, score}}) => {
+const statsResultHtml = ({answers, pointsMultiply, totalPoints, bonuses, totalResult: {success, score}}, index) => {
   return `
     <table class="result__table">
       <tr>
-        <td class="result__number">${gameNumber}.</td>
-        <td colspan="2">${gameStatsHtml(stats)}</td>
-        <td class="result__points">${pointsMultiply ? `× ${pointsMultiply}` : ``}</td>
+        <td>${index + 1}</td>
+        <td colspan="2">${gameStatsHtml(answers)}</td>
+        <td class="result__points">${pointsMultiply ? `× ${pointsMultiply}` : `&mdash;`}</td>
         <td class="result__total">${totalPoints}</td>
       </tr>
       ${[...bonuses].map(({name, shortName, count, points, total}) => {
@@ -33,19 +33,23 @@ const statsResultHtml = ({gameNumber, stats, pointsMultiply, totalPoints, bonuse
   `;
 };
 
-const statsNode = () => {
+const statsNode = (state, answers) => {
+  const statistic = calculateStatistic(state, answers);
+  addGameStatistic(statistic);
+  const allGamesStatistic = getGameStatistic();
+
   const node = createDomElement(`
-    ${header(initialState)}
+    ${header(state)}
     <div class="result">
-      <h1>Победа!</h1>
-      ${[...initialState.games].map((gameData) => {
-        return statsResultHtml(gameData);
+      <h1>${statistic.totalResult.success ? `Победа!` : `Вы проиграли`}</h1>
+      ${allGamesStatistic.map((currentStatistic, index) => {
+        return statsResultHtml(currentStatistic, index);
       }).join(``)}
     </div>
     ${footer}
   `);
 
-  backToIntro(node);
+  backToIntro(node, state);
 
   return node;
 };
