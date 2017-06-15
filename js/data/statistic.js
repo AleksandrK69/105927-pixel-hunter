@@ -76,6 +76,6 @@ export const addGameStatistic = (statistic) => {
   window.gameStatistic.push(statistic);
 };
 
-export const getGameStatistic = (statistic) => {
+export const getGameStatistic = () => {
   return window.gameStatistic;
 };
