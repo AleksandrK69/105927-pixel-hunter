@@ -1,98 +1,100 @@
 import renderScreen from '../render-screen';
 import GameView from './game-view';
-import showIntro from '../intro/intro';
-import showHeader from '../header/header';
-import showStatisticSummary from '../statistic/statistic-summary';
-import showStatistic from '../statistic/statistic';
-
-import showQuestionChooseType from '../question/question-choose-type';
-import showQuestionPhotoOrPic from '../question/question-photo-or-pic';
-import showQuestionFindPic from '../question/question-find-pic';
-
+import App from '../main';
+import {initialState, setLives, setLevel} from '../data/state';
 import {addAnswer, getAnswerValue} from '../data/answers';
-import {setLevel, setLives} from '../data/state';
-
 import questions from '../data/questions';
-import {QUESTIONS_TITLES, QUESTION_TYPES, LEVELS_COUNT, TIME_TO_GAME} from '../constants';
+import {timer} from '../timer';
+import handleTimer from '../timer-handler';
+import {calculateStatistic, addGameStatistic, getGameStatistic} from '../data/statistic';
+import StatisticView from '../statistic/statistic-view';
+import {TIME_TO_GAME, LEVELS_COUNT} from '../constants';
 
-const showGame = (state, answers) => {
-  const {level, timer, lives} = state;
-  const question = questions[level];
+export default class Game {
+  constructor(state = initialState, answers = []) {
+    this.state = state;
+    this.answers = answers;
+    this.question = questions[this.state.level];
 
-  const goToNextStep = (isCorrectAnswer) => {
-    const levelTime = TIME_TO_GAME - timer.getTimer();
-    const nextStep = level + 1;
-    const currentAnswers = addAnswer(answers, getAnswerValue(isCorrectAnswer, levelTime));
+    this.view = new GameView({
+      lives: this.state.lives,
+      answers: this.answers,
+      question: questions[this.state.level]
+    });
 
+    this.timer = timer();
+    this.timer.start(TIME_TO_GAME);
+    handleTimer();
+
+    document.addEventListener(`timerStop`, () => {
+      // При остановке засчитывается неправильный ответ
+      this.goToNextStep(false);
+    });
+  }
+
+  init(withTimer = true) {
+    this.timer.stop();
+
+    if (withTimer) {
+      this.timer.start(TIME_TO_GAME);
+    }
+
+    renderScreen(this.view);
+
+    this.view.onChooseType = (answer1, answer2) => {
+      const isCorrect = this.question.correctAnswer[0] === answer1 && this.question.correctAnswer[1] === answer2;
+      this.goToNextStep(isCorrect);
+    };
+
+    this.view.onFindPic = (pictureIndex) => {
+      const isCorrect = this.question.correctAnswer === pictureIndex;
+      this.goToNextStep(isCorrect);
+    };
+
+    this.view.onSetPhotoOrPic = (type) => {
+      const isCorrect = this.question.correctAnswer === type;
+      this.goToNextStep(isCorrect);
+    };
+
+    this.view.onBackToIntro = () => {
+      this.timer.stop();
+      this.timer.clear();
+      App.showIntro();
+    };
+  }
+
+  goToNextStep(isCorrectAnswer) {
+    const levelTime = TIME_TO_GAME - this.timer.getTimer();
+    const nextLevel = this.state.level + 1;
+    this.answers = addAnswer(this.answers, getAnswerValue(isCorrectAnswer, levelTime));
     // если ответ неправильный - снимается жизнь
-    const currentState = !isCorrectAnswer ? setLives(state, state.lives - 1) : state;
+    this.state = !isCorrectAnswer ? setLives(this.state, this.state.lives - 1) : this.state;
 
-    if (currentState.lives > 0 && nextStep < LEVELS_COUNT) {
+    if (this.state.lives > 0 && nextLevel < LEVELS_COUNT) {
       // если возможен переход на следующий шаг - игра продолжается
-      return renderScreen(showGame(setLevel(currentState, nextStep), currentAnswers));
+      this.state = setLevel(this.state, nextLevel);
+      this.question = questions[nextLevel];
+      this.view = new GameView({
+        lives: this.state.lives,
+        answers: this.answers,
+        question: this.question
+      });
+      this.init();
     } else {
       // если игра закончилась - останавливается таймер и показывается статистика
-      timer.stop();
-      timer.clear();
-      return renderScreen(showStatistic(currentState, currentAnswers));
+      this.timer.stop();
+      this.timer.clear();
+
+      const statisticData = calculateStatistic(this.state, this.answers);
+      addGameStatistic(statisticData);
+
+      this.view = new StatisticView({
+        state: this.state,
+        answers: this.answers,
+        title: statisticData.totalResult.success ? `Победа!` : `Вы проиграли`,
+        statistic: getGameStatistic()
+      });
+      this.init(false);
     }
-  };
-
-  const game = new GameView();
-
-  game.title = QUESTIONS_TITLES[question.type];
-
-  game.getHeaderTemplate = () => showHeader({timer, lives});
-
-  game.onBackToIntro = () => {
-    state.timer.clear();
-    renderScreen(showIntro());
-  };
-
-  game.renderQuestion = () => {
-    switch (question.type) {
-      case QUESTION_TYPES.chooseType:
-        return showQuestionChooseType(...question.images);
-
-      case QUESTION_TYPES.photoOrPic:
-        return showQuestionPhotoOrPic(...question.images);
-
-      case QUESTION_TYPES.findPic:
-        return showQuestionFindPic(...question.images);
-
-      default:
-        return null;
-    }
-  };
-
-  game.onChooseType = (answer1, answer2) => {
-    const isCorrect = question.correctAnswer[0] === answer1 && question.correctAnswer[1] === answer2;
-    goToNextStep(isCorrect);
-  };
-
-  game.onFindPic = (pictureIndex) => {
-    const isCorrect = question.correctAnswer === pictureIndex;
-    goToNextStep(isCorrect);
-  };
-
-  game.onSetPhotoOrPic = (type) => {
-    const isCorrect = question.correctAnswer === type;
-    goToNextStep(isCorrect);
-  };
-
-  game.renderStatistic = () => {
-    return showStatisticSummary(answers);
-  };
-
-  state.timer.stop();
-  state.timer.start(TIME_TO_GAME);
-
-  document.addEventListener(`timerStop`, () => {
-    // При остановке засчитывается неправильный ответ
-    goToNextStep(false);
-  });
-
-  return game.element;
-};
-
-export default showGame;
+  }
+}

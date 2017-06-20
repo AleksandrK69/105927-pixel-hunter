@@ -1,13 +1,18 @@
 import renderScreen from '../render-screen';
 import GreetingView from './greeting-view';
-import showRules from '../rules/rules';
+import App from '../main';
 
-export default (state, answers) => {
-  const greeting = new GreetingView();
+export default class Greeting {
+  constructor() {
 
-  greeting.onMoveToNextScreen = () => {
-    renderScreen(showRules(state, answers));
-  };
+    this.view = new GreetingView();
+  }
 
-  return greeting.element;
-};
+  init() {
+    renderScreen(this.view);
+
+    this.view.onMoveToNextScreen = () => {
+      App.showRules();
+    };
+  }
+}

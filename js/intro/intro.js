@@ -1,22 +1,21 @@
 import renderScreen from '../render-screen';
 import IntroView from './intro-view';
-import showGreeting from '../greeting/greeting';
+import App from '../main';
 
-import {state, setTimer} from '../data/state';
-import {answers} from '../data/answers';
+import {initialState} from '../data/state';
 
-import {timer} from '../timer';
-import handleTimer from '../timer-handler';
+export default class Intro {
+  constructor(state = initialState) {
+    this.view = new IntroView({
+      state
+    });
+  }
 
-export default () => {
-  const intro = new IntroView();
+  init() {
+    renderScreen(this.view);
 
-  intro.onMoveToNextScreen = () => {
-    const initState = setTimer(state, timer());
-    renderScreen(showGreeting(initState, answers));
-  };
-
-  handleTimer();
-
-  return intro.element;
-};
+    this.view.onMoveToNextScreen = () => {
+      App.showGreeting();
+    };
+  }
+}

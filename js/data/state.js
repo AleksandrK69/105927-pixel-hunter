@@ -1,9 +1,9 @@
 import {LEVELS_COUNT, LIVES_COUNT} from '../constants';
 
-export const state = Object.freeze({
+export const initialState = Object.freeze({
   level: 0,
   lives: LIVES_COUNT,
-  timer: null
+  timer: 0
 });
 
 /**

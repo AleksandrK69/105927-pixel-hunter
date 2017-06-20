@@ -20,7 +20,7 @@ export default class HeaderView extends AbstractView {
         </span>
         </div>
         
-        <h1 class="game__timer">${this._timer.getTimer()}</h1>
+        <h1 class="game__timer">${this._timer}</h1>
         
         <div class="game__lives">
         ${new Array(LIVES_COUNT - this._lives).fill(emptyLiveHtml).join(``)}

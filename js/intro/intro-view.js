@@ -21,4 +21,8 @@ export default class IntroView extends AbstractView {
       this.onMoveToNextScreen();
     });
   }
+
+  onMoveToNextScreen() {
+
+  }
 }

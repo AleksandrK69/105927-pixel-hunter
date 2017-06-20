@@ -1,6 +1,6 @@
 const containerNode = document.querySelector(`main.central`);
 
-export default function renderScreen(screenNode) {
+export default function renderScreen(view) {
   containerNode.innerHTML = ``;
-  containerNode.appendChild(screenNode);
+  containerNode.appendChild(view.element);
 }
