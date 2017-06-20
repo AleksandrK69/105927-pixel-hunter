@@ -31,12 +31,9 @@ export default class Game {
     });
   }
 
-  init(withTimer = true) {
+  init() {
     this.timer.stop();
-
-    if (withTimer) {
-      this.timer.start(TIME_TO_GAME);
-    }
+    this.timer.start(TIME_TO_GAME);
 
     renderScreen(this.view);
 
@@ -56,9 +53,11 @@ export default class Game {
     };
 
     this.view.onBackToIntro = () => {
-      this.timer.stop();
-      this.timer.clear();
-      App.showIntro();
+      if (confirm(`Вы действительно хотите покинуть игру?`)) { // eslint-disable-line no-alert
+        this.timer.stop();
+        this.timer.clear();
+        App.showIntro();
+      }
     };
   }
 

@@ -8,7 +8,7 @@ export default class Statistic {
   constructor(state = initialState) {
     const statistic = getGameStatistic();
 
-    const lastGame = statistic[statistic.length - 1];
+    const lastGame = statistic[0];
     let title = `Статистика`;
     if (lastGame) {
       title = lastGame.totalResult.success ? `Победа!` : `Вы проиграли`;
