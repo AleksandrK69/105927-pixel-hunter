@@ -88,13 +88,7 @@ export default class Game {
       const statisticData = calculateStatistic(this.state, this.answers);
       addGameStatistic(statisticData);
 
-      this.view = new StatisticView({
-        state: this.state,
-        answers: this.answers,
-        title: statisticData.totalResult.success ? `Победа!` : `Вы проиграли`,
-        statistic: getGameStatistic()
-      });
-      this.init(false);
+      App.showStatistic();
     }
   }
 }

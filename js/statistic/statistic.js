@@ -5,12 +5,19 @@ import {initialState} from '../data/state';
 import {getGameStatistic} from '../data/statistic';
 
 export default class Statistic {
-  constructor(state = initialState, answers = []) {
+  constructor(state = initialState) {
+    const statistic = getGameStatistic();
+
+    const lastGame = statistic[statistic.length - 1];
+    let title = `Статистика`;
+    if (lastGame) {
+      title = lastGame.totalResult.success ? `Победа!` : `Вы проиграли`;
+    }
+
     this.view = new StatisticView({
       state,
-      answers,
-      title: `Статистика`,
-      statistic: getGameStatistic()
+      title,
+      statistic
     });
   }
 
