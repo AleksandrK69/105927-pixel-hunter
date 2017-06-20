@@ -6,8 +6,7 @@ import {addAnswer, getAnswerValue} from '../data/answers';
 import questions from '../data/questions';
 import {timer} from '../timer';
 import handleTimer from '../timer-handler';
-import {calculateStatistic, addGameStatistic, getGameStatistic} from '../data/statistic';
-import StatisticView from '../statistic/statistic-view';
+import {calculateStatistic, addGameStatistic} from '../data/statistic';
 import {TIME_TO_GAME, LEVELS_COUNT} from '../constants';
 
 export default class Game {
