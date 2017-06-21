@@ -1,24 +1,31 @@
-import StatisticView from './statistic-view';
-import showHeader from '../header/header';
 import renderScreen from '../render-screen';
-import showIntro from '../intro/intro';
+import StatisticView from './statistic-view';
+import App from '../main';
+import {initialState} from '../data/state';
+import {getGameStatistic} from '../data/statistic';
 
-import {calculateStatistic, addGameStatistic, getGameStatistic} from '../data/statistic';
+export default class Statistic {
+  constructor(state = initialState) {
+    const statistic = getGameStatistic();
 
-export default (state, answers) => {
-  const statisticData = calculateStatistic(state, answers);
-  addGameStatistic(statisticData);
+    const lastGame = statistic[0];
+    let title = `Статистика`;
+    if (lastGame) {
+      title = lastGame.totalResult.success ? `Победа!` : `Вы проиграли`;
+    }
 
-  const statistic = new StatisticView();
-  statistic.title = statisticData.totalResult.success ? `Победа!` : `Вы проиграли`;
-  statistic.statistic = getGameStatistic();
+    this.view = new StatisticView({
+      state,
+      title,
+      statistic
+    });
+  }
 
-  statistic.getHeaderTemplate = () => showHeader(state);
+  init() {
+    renderScreen(this.view);
 
-  statistic.onBackToIntro = () => {
-    state.timer.clear();
-    renderScreen(showIntro());
-  };
-
-  return statistic.element;
-};
+    this.view.onBackToIntro = () => {
+      App.showIntro();
+    };
+  }
+}

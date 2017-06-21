@@ -73,7 +73,7 @@ export const initStatisticStore = () => {
 };
 
 export const addGameStatistic = (statistic) => {
-  window.gameStatistic.push(statistic);
+  window.gameStatistic.unshift(statistic);
 };
 
 export const getGameStatistic = () => {

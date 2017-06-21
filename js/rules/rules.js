@@ -1,19 +1,22 @@
 import renderScreen from '../render-screen';
 import RulesView from './rules-view';
-import showIntro from '../intro/intro';
-import showHeader from '../header/header';
-import showGame from '../game/game';
+import App from '../main';
+import {initialState} from '../data/state';
 
-export default (state, answers) => {
-  const rules = new RulesView();
-  rules.getHeaderTemplate = () => showHeader(state);
-  rules.onBackToIntro = () => {
-    state.timer.clear();
-    renderScreen(showIntro());
-  };
-  rules.onMoveToNextScreen = () => {
-    renderScreen(showGame(state, answers));
-  };
+export default class Rules {
+  constructor(state = initialState) {
+    this.view = new RulesView(state);
+  }
 
-  return rules.element;
-};
+  init() {
+    renderScreen(this.view);
+
+    this.view.onMoveToNextScreen = () => {
+      App.showGame();
+    };
+
+    this.view.onBackToIntro = () => {
+      App.showIntro();
+    };
+  }
+}

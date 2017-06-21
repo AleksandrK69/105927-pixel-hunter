@@ -1,5 +1,5 @@
 import assert from 'assert';
-import {state, setLevel, setLives, setTimer} from './state';
+import {initialState as state, setLevel, setLives, setTimer} from './state';
 import {LEVELS_COUNT, LIVES_COUNT} from '../constants';
 
 describe(`Game`, () => {
@@ -63,8 +63,8 @@ describe(`Game`, () => {
       assert.throws(updateTimer);
     });
 
-    it(`should have null timer on start`, () => {
-      assert.equal(null, state.timer);
+    it(`should have 0 timer on start`, () => {
+      assert.equal(0, state.timer);
     });
   });
 });

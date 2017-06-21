@@ -1,32 +1,51 @@
 import AbstractView from '../view';
 import footer from '../footer/footer';
+import showHeader from '../header/header';
 import showStatisticGame from './statistic-game';
 
 export default class StatisticView extends AbstractView {
+  constructor(props) {
+    super(props);
+
+    this.lives = props.state.lives;
+    this.timer = 0;
+    this.title = props.title;
+    this.statistic = props.statistic;
+  }
+
   get template() {
     return `
-      ${this.getHeaderTemplate()}
+      ${showHeader({
+        lives: this.lives,
+        timer: this.timer
+      })}
       <div class="result">
-        <h1>${this._title}</h1>
-        ${this._statistic.map((currentStatistic, index) => {
-          return showStatisticGame(currentStatistic, index);
-        }).join(``)}
+        <h1>${this.title}</h1>
+        ${this.renderSummaryStatistic()}
       </div>
       ${footer}
-    `;
-  }
-
-  set title(title) {
-    this._title = title;
-  }
-
-  set statistic(statistic) {
-    this._statistic = statistic;
+  `;
   }
 
   bind() {
     this.element.querySelector(`.back`).addEventListener(`click`, () => {
       this.onBackToIntro();
     });
+  }
+
+  renderSummaryStatistic() {
+    if (!this.statistic.length) {
+      return `Вы пока не сыграли ни одной игры.`;
+    }
+
+    return `<div>
+      ${this.statistic.map((currentStatistic, index) => {
+        return showStatisticGame(currentStatistic, index);
+      }).join(``)}
+    </div>`;
+  }
+
+  onBackToIntro() {
+
   }
 }

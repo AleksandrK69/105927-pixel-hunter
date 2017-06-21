@@ -28,4 +28,8 @@ export default class GreetingView extends AbstractView {
       this.onMoveToNextScreen();
     });
   }
+
+  onMoveToNextScreen() {
+
+  }
 }

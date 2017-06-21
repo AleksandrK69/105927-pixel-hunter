@@ -1,12 +1,23 @@
 import AbstractView from '../view';
 import footer from '../footer/footer';
+import showHeader from '../header/header';
 
 import {LEVELS_COUNT, TIME_TO_GAME, LIVES_COUNT} from '../constants';
 
 export default class RulesView extends AbstractView {
+  constructor(props) {
+    super(props);
+
+    this.lives = props.lives;
+    this.timer = props.timer;
+  }
+
   get template() {
     return `
-      ${this.getHeaderTemplate()}
+      ${showHeader({
+        lives: this.lives,
+        timer: this.timer
+      })}
       <div class="rules">
         <h1 class="rules__title">Правила</h1>
         <p class="rules__description">Угадай ${LEVELS_COUNT} раз для каждого изображения фото <img
@@ -48,5 +59,13 @@ export default class RulesView extends AbstractView {
     this.element.querySelector(`.back`).addEventListener(`click`, () => {
       this.onBackToIntro();
     });
+  }
+
+  onMoveToNextScreen() {
+
+  }
+
+  onBackToIntro() {
+
   }
 }
