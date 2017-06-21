@@ -4,6 +4,8 @@ import Rules from './rules/rules';
 import Game from './game/game';
 import Statistic from './statistic/statistic';
 import {initStatisticStore} from './data/statistic';
+import {makeFetch} from './fetch';
+import {API} from './constants';
 
 const ControllerId = {
   INTRO: ``,
@@ -36,6 +38,10 @@ class App {
 
   init() {
     this.changeController(getControllerIdFromHash(location.hash));
+
+    makeFetch(API.questions).then((result) => {
+      window.gameQuestions = result;
+    });
   }
 
   changeController(route = ``) {

@@ -2,12 +2,12 @@ import AbstractView from '../view';
 import footer from '../footer/footer';
 import showHeader from '../header/header';
 
-import showQuestionChooseType from '../question/question-choose-type';
-import showQuestionPhotoOrPic from '../question/question-photo-or-pic';
-import showQuestionFindPic from '../question/question-find-pic';
+import showQuestionTwoOfTwo from '../question/question-two-of-two';
+import showQuestionTinderLike from '../question/question-tinder-like';
+import showQuestionOneOfThree from '../question/question-one-of-three';
 import showStatisticSummary from '../statistic/statistic-summary';
 
-import {QUESTION_TYPES, QUESTIONS_TITLES, TIME_TO_GAME} from '../constants';
+import {QUESTION_TYPES, TIME_TO_GAME} from '../constants';
 
 export default class GameView extends AbstractView {
   constructor(props) {
@@ -15,10 +15,10 @@ export default class GameView extends AbstractView {
 
     this.lives = props.lives;
     this.questionType = props.question.type;
-    this.questionImages = props.question.images;
+    this.questionAnswer = props.question.answers;
     this.answers = props.answers;
     this.timer = TIME_TO_GAME;
-    this.title = QUESTIONS_TITLES[this.questionType];
+    this.title = props.question.question;
   }
 
   get template() {
@@ -73,14 +73,14 @@ export default class GameView extends AbstractView {
 
   getQuestionView() {
     switch (this.questionType) {
-      case QUESTION_TYPES.chooseType:
-        return showQuestionChooseType(...this.questionImages);
+      case QUESTION_TYPES.twoOfTwo:
+        return showQuestionTwoOfTwo(this.questionAnswer);
 
-      case QUESTION_TYPES.photoOrPic:
-        return showQuestionPhotoOrPic(...this.questionImages);
+      case QUESTION_TYPES.tinderLike:
+        return showQuestionTinderLike(this.questionAnswer);
 
-      case QUESTION_TYPES.findPic:
-        return showQuestionFindPic(...this.questionImages);
+      case QUESTION_TYPES.oneOfThree:
+        return showQuestionOneOfThree(this.questionAnswer);
 
       default:
         return null;
