@@ -1,4 +1,5 @@
 import AbstractView from '../view';
+import {BONUSES_NAMES} from '../constants';
 
 export default class StatisticGameView extends AbstractView {
   get template() {
@@ -10,11 +11,11 @@ export default class StatisticGameView extends AbstractView {
         <td class="result__points">${this._pointsMultiply}</td>
         <td class="result__total">${this._totalPoints}</td>
         </tr>
-        ${this._bonuses.map(({name, shortName, count, points, total}) => {
+        ${this._bonuses.map(({shortName, count, points, total}) => {
           return `
           <tr>
           <td></td>
-          <td class="result__extra">${name}:</td>
+          <td class="result__extra">${BONUSES_NAMES[shortName]}:</td>
           <td class="result__extra">${count}&nbsp;<span class="stats__result stats__result--${shortName}"></span></td>
           <td class="result__points">×&nbsp;${points}</td>
           <td class="result__total">${total}</td>

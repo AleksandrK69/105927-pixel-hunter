@@ -2,11 +2,12 @@ import renderScreen from '../render-screen';
 import StatisticView from './statistic-view';
 import App from '../main';
 import {initialState} from '../data/state';
-import {getGameStatistic} from '../data/statistic';
+import {decode} from '../utils';
 
 export default class Statistic {
-  constructor(state = initialState) {
-    const statistic = getGameStatistic();
+  constructor(statisticEncoded, state = initialState) {
+    const statisticDecoded = decode(statisticEncoded);
+    const statistic = JSON.parse(statisticDecoded);
 
     const lastGame = statistic[0];
     let title = `Статистика`;
