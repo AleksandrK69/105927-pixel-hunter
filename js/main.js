@@ -13,7 +13,17 @@ const ControllerId = {
   STATISTIC: `statistic`,
 };
 
-const getControllerIdFromHash = (hash) => hash.replace(`#`, ``);
+const getControllerIdFromHash = (hash) => {
+  const hashValue = hash.replace(`#`, ``);
+  const hashParams = hashValue.split(`=`);
+  return hashParams ? hashParams[0] : hashValue;
+};
+
+const getHashParam = (hash) => {
+  const hashValue = hash.replace(`#`, ``);
+  const hashParams = hashValue.split(`=`);
+  return hashParams ? hashParams[1] : null;
+};
 
 class App {
   constructor() {
@@ -41,7 +51,7 @@ class App {
   changeController(route = ``) {
     const Controller = this.routes[route];
     try {
-      new Controller().init();
+      new Controller(getHashParam(location.hash)).init();
     } catch (e) {
       throw new Error(`Wrong Controller`);
     }
@@ -63,8 +73,8 @@ class App {
     location.hash = ControllerId.GAME;
   }
 
-  showStatistic() {
-    location.hash = ControllerId.STATISTIC;
+  showStatistic(statisticHash = ``) {
+    location.hash = `${ControllerId.STATISTIC}=${statisticHash}`;
   }
 }
 
