@@ -42,16 +42,20 @@ class App {
     };
 
     initStatisticStore();
-    this.init();
+
+    if (!window.gameQuestions) {
+      makeFetch(API.questions).then((result) => {
+        window.gameQuestions = result;
+        this.init();
+      });
+    } else {
+      this.init();
+    }
   }
 
 
   init() {
     this.changeController(getControllerIdFromHash(location.hash));
-
-    makeFetch(API.questions).then((result) => {
-      window.gameQuestions = result;
-    });
   }
 
   changeController(route = ``) {
