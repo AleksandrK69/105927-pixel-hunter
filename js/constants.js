@@ -33,3 +33,9 @@ export const BONUSES_COST = {
 };
 
 export const TIME_TO_GAME = 30;
+
+export const BONUSES_NAMES = {
+  heart: `Бонус за жизни`,
+  fast: `Бонус за скорость`,
+  slow: `Штраф за медлительность`
+};

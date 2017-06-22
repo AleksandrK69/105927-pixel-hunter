@@ -26,7 +26,6 @@ export const calculateStatistic = (state, answers) => {
   const bonuses = [];
   if (livesCount) {
     bonuses.push({
-      name: `Бонус за жизни`,
       shortName: `heart`,
       count: livesCount,
       points: BONUSES_COST.lives,
@@ -36,7 +35,6 @@ export const calculateStatistic = (state, answers) => {
 
   if (fastAnswersCount) {
     bonuses.push({
-      name: `Бонус за скорость`,
       shortName: `fast`,
       count: fastAnswersCount,
       points: BONUSES_COST[ANSWERS_VALUES.fast],
@@ -46,7 +44,6 @@ export const calculateStatistic = (state, answers) => {
 
   if (slowAnswersCount) {
     bonuses.push({
-      name: `Штраф за медлительность`,
       shortName: `slow`,
       count: slowAnswersCount,
       points: BONUSES_COST[ANSWERS_VALUES.slow],

@@ -5,7 +5,8 @@ import {initialState, setLives, setLevel} from '../data/state';
 import {addAnswer, getAnswerValue} from '../data/answers';
 import {timer} from '../timer';
 import handleTimer from '../timer-handler';
-import {calculateStatistic, addGameStatistic} from '../data/statistic';
+import {calculateStatistic, addGameStatistic, getGameStatistic} from '../data/statistic';
+import {encode} from '../utils';
 import {TIME_TO_GAME, LEVELS_COUNT, ANSWERS_TYPES} from '../constants';
 
 export default class Game {
@@ -52,11 +53,9 @@ export default class Game {
     };
 
     this.view.onBackToIntro = () => {
-      if (confirm(`Вы действительно хотите покинуть игру?`)) { // eslint-disable-line no-alert
-        this.timer.stop();
-        this.timer.clear();
-        App.showIntro();
-      }
+      this.timer.stop();
+      this.timer.clear();
+      App.showIntro();
     };
   }
 
@@ -85,7 +84,8 @@ export default class Game {
       const statisticData = calculateStatistic(this.state, this.answers);
       addGameStatistic(statisticData);
 
-      App.showStatistic();
+      const stats = getGameStatistic();
+      App.showStatistic(encode(JSON.stringify(stats)));
     }
   }
 }
