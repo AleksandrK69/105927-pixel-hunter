@@ -26,7 +26,7 @@ export default class Statistic {
         this.view = new StatisticView({
           state,
           user: username,
-          statistic: statistic
+          statistic
         });
 
         this.init();

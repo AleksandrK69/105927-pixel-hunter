@@ -22,14 +22,14 @@ describe(`Game`, () => {
           false,
           calculateStatistic({
             lives: 0,
-            stats: [ANSWERS_VALUES.wrong, ANSWERS_VALUES.wrong, ANSWERS_VALUES.wrong]
+            answers: [ANSWERS_VALUES.wrong, ANSWERS_VALUES.wrong, ANSWERS_VALUES.wrong]
           }).totalResult.success
       );
     });
 
     const statistic = calculateStatistic({
       lives: 3,
-      stats: correctAnswers
+      answers: correctAnswers
     });
     const statBonuses = statistic.bonuses;
     const livesBonus = statBonuses.find((bonus) => bonus.shortName === `heart`);

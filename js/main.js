@@ -60,12 +60,11 @@ class App {
     const Controller = this.routes[route];
 
     if (route === ControllerId.STATISTIC) {
-      new Controller(getHashParam(location.hash));
-      return;
+      return new Controller(getHashParam(location.hash));
     }
 
     try {
-      new Controller(getHashParam(location.hash)).init();
+      return new Controller(getHashParam(location.hash)).init();
     } catch (e) {
       throw new Error(`Wrong Controller`);
     }

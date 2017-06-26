@@ -80,7 +80,7 @@ export default class Game {
       this.timer.clear();
 
       fetch(API.statistic.replace(`:username`, window.gameUsername), {
-        method: 'post',
+        method: `post`,
         body: JSON.stringify({stats: this.answers, lives: this.state.lives})
       })
         .then((response) => response.text())
