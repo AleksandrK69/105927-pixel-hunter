@@ -1,6 +1,6 @@
 import AbstractView from '../view';
 
-export default class QuestionFindPicView extends AbstractView {
+export default class QuestionOneOfThreeView extends AbstractView {
   get template() {
     return `
       <form class="game__content game__content--triple js-question__find-pic">
@@ -8,10 +8,10 @@ export default class QuestionFindPicView extends AbstractView {
         <img src="${this._image1}" alt="Option 1" width="304" height="455">
         </div>
         <div class="game__option  game__option--selected">
-        <img src="${this._image2}" alt="Option 1" width="304" height="455">
+        <img src="${this._image2}" alt="Option 2" width="304" height="455">
         </div>
         <div class="game__option">
-        <img src="${this._image3}" alt="Option 1" width="304" height="455">
+        <img src="${this._image3}" alt="Option 3" width="304" height="455">
         </div>
       </form>
     `;

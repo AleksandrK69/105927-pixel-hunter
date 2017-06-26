@@ -4,6 +4,8 @@ import Rules from './rules/rules';
 import Game from './game/game';
 import Statistic from './statistic/statistic';
 import {initStatisticStore} from './data/statistic';
+import {makeFetch} from './fetch';
+import {API} from './constants';
 
 const ControllerId = {
   INTRO: ``,
@@ -40,7 +42,15 @@ class App {
     };
 
     initStatisticStore();
-    this.init();
+
+    if (!window.gameQuestions) {
+      makeFetch(API.questions).then((result) => {
+        window.gameQuestions = result;
+        this.init();
+      });
+    } else {
+      this.init();
+    }
   }
 
 

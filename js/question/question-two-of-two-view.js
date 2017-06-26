@@ -1,28 +1,29 @@
 import AbstractView from '../view';
+import {ANSWERS_TYPES} from '../constants';
 
-export default class QuestionChooseTypeView extends AbstractView {
+export default class QuestionTwoOfTwoView extends AbstractView {
   get template() {
     return `
       <form class="game__content js-question__choose-type">
         <div class="game__option">
           <img src="${this._image1}" alt="Option 1" width="468" height="458">
           <label class="game__answer game__answer--photo">
-          <input name="question1" type="radio" value="photo">
+          <input name="question1" type="radio" value="${ANSWERS_TYPES.photo}">
           <span>Фото</span>
           </label>
           <label class="game__answer game__answer--paint">
-          <input name="question1" type="radio" value="paint">
+          <input name="question1" type="radio" value="${ANSWERS_TYPES.painting}">
           <span>Рисунок</span>
           </label>
         </div>
         <div class="game__option">
           <img src="${this._image2}" alt="Option 2" width="468" height="458">
           <label class="game__answer  game__answer--photo">
-          <input name="question2" type="radio" value="photo">
+          <input name="question2" type="radio" value="${ANSWERS_TYPES.photo}">
           <span>Фото</span>
           </label>
           <label class="game__answer  game__answer--paint">
-          <input name="question2" type="radio" value="paint">
+          <input name="question2" type="radio" value="${ANSWERS_TYPES.painting}">
           <span>Рисунок</span>
           </label>
         </div>
