@@ -81,6 +81,10 @@ export default class Game {
 
       fetch(API.statistic.replace(`:username`, window.gameUsername), {
         method: `post`,
+        headers: {
+          'Accept': `application/json`,
+          'Content-Type': `application/json`
+        },
         body: JSON.stringify({stats: this.answers, lives: this.state.lives})
       })
         .then((response) => response.text())
