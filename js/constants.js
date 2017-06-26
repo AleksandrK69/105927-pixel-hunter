@@ -1,5 +1,6 @@
 export const API = {
-  questions: `https://intensive-ecmascript-server-btfgudlkpi.now.sh/pixel-hunter/questions`
+  questions: `https://intensive-ecmascript-server-btfgudlkpi.now.sh/pixel-hunter/questions`,
+  statistic: `https://intensive-ecmascript-server-btfgudlkpi.now.sh/pixel-hunter/stats/:username`
 };
 
 export const LEVELS_COUNT = 10;

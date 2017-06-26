@@ -3,8 +3,6 @@ import Greeting from './greeting/greeting';
 import Rules from './rules/rules';
 import Game from './game/game';
 import Statistic from './statistic/statistic';
-import {initStatisticStore} from './data/statistic';
-import {makeFetch} from './fetch';
 import {API} from './constants';
 
 const ControllerId = {
@@ -41,13 +39,13 @@ class App {
       this.changeController(getControllerIdFromHash(location.hash));
     };
 
-    initStatisticStore();
-
     if (!window.gameQuestions) {
-      makeFetch(API.questions).then((result) => {
-        window.gameQuestions = result;
-        this.init();
-      });
+      fetch(API.questions)
+        .then((response) => response.json())
+        .then((result) => {
+          window.gameQuestions = result;
+          this.init();
+        });
     } else {
       this.init();
     }
@@ -60,6 +58,12 @@ class App {
 
   changeController(route = ``) {
     const Controller = this.routes[route];
+
+    if (route === ControllerId.STATISTIC) {
+      new Controller(getHashParam(location.hash));
+      return;
+    }
+
     try {
       new Controller(getHashParam(location.hash)).init();
     } catch (e) {

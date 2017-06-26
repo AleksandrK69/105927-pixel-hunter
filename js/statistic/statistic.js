@@ -2,24 +2,35 @@ import renderScreen from '../render-screen';
 import StatisticView from './statistic-view';
 import App from '../main';
 import {initialState} from '../data/state';
-import {decode} from '../utils';
+import {calculateStatistic} from '../data/statistic';
+import {API} from '../constants';
 
 export default class Statistic {
-  constructor(statisticEncoded, state = initialState) {
-    const statisticDecoded = decode(statisticEncoded);
-    const statistic = JSON.parse(statisticDecoded);
-
-    const lastGame = statistic[0];
-    let title = `Статистика`;
-    if (lastGame) {
-      title = lastGame.totalResult.success ? `Победа!` : `Вы проиграли`;
+  constructor(username, state = initialState) {
+    // если не указан пользователь - редирект на начальную страницу
+    if (!username) {
+      App.showIntro();
+      return;
     }
 
-    this.view = new StatisticView({
-      state,
-      title,
-      statistic
-    });
+    fetch(API.statistic.replace(`:username`, username))
+      .then((response) => response.json())
+      .then((data) => {
+        const statistic = [];
+        data.forEach(({lives, stats}) => {
+          if (stats) {
+            statistic.push(calculateStatistic({lives, answers: stats}));
+          }
+        });
+
+        this.view = new StatisticView({
+          state,
+          user: username,
+          statistic: statistic
+        });
+
+        this.init();
+      });
   }
 
   init() {

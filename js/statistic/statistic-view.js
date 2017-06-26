@@ -9,8 +9,8 @@ export default class StatisticView extends AbstractView {
 
     this.lives = props.state.lives;
     this.timer = 0;
-    this.title = props.title;
     this.statistic = props.statistic;
+    this.user = props.user;
   }
 
   get template() {
@@ -20,7 +20,7 @@ export default class StatisticView extends AbstractView {
         timer: this.timer
       })}
       <div class="result">
-        <h1>${this.title}</h1>
+        <h1>Статистика для ${this.user}</h1>
         ${this.renderSummaryStatistic()}
       </div>
       ${footer}

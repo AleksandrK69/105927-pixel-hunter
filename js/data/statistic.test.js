@@ -20,11 +20,17 @@ describe(`Game`, () => {
     it(`should fail the game`, () => {
       assert.equal(
           false,
-          calculateStatistic({lives: 0}, [ANSWERS_VALUES.wrong, ANSWERS_VALUES.wrong, ANSWERS_VALUES.wrong]).totalResult.success
+          calculateStatistic({
+            lives: 0,
+            stats: [ANSWERS_VALUES.wrong, ANSWERS_VALUES.wrong, ANSWERS_VALUES.wrong]
+          }).totalResult.success
       );
     });
 
-    const statistic = calculateStatistic({lives: 3}, correctAnswers);
+    const statistic = calculateStatistic({
+      lives: 3,
+      stats: correctAnswers
+    });
     const statBonuses = statistic.bonuses;
     const livesBonus = statBonuses.find((bonus) => bonus.shortName === `heart`);
     const fastBonus = statBonuses.find((bonus) => bonus.shortName === `fast`);
