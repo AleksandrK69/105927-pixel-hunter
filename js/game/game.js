@@ -5,9 +5,7 @@ import {initialState, setLives, setLevel} from '../data/state';
 import {addAnswer, getAnswerValue} from '../data/answers';
 import {timer} from '../timer';
 import handleTimer from '../timer-handler';
-import {calculateStatistic, addGameStatistic, getGameStatistic} from '../data/statistic';
-import {encode} from '../utils';
-import {TIME_TO_GAME, LEVELS_COUNT, ANSWERS_TYPES} from '../constants';
+import {TIME_TO_GAME, LEVELS_COUNT, ANSWERS_TYPES, API} from '../constants';
 
 export default class Game {
   constructor(state = initialState, answers = []) {
@@ -81,11 +79,18 @@ export default class Game {
       this.timer.stop();
       this.timer.clear();
 
-      const statisticData = calculateStatistic(this.state, this.answers);
-      addGameStatistic(statisticData);
-
-      const stats = getGameStatistic();
-      App.showStatistic(encode(JSON.stringify(stats)));
+      fetch(API.statistic.replace(`:username:`, encodeURIComponent(window.gameUsername)), {
+        method: `post`,
+        headers: {
+          'Accept': `application/json`,
+          'Content-Type': `application/json`
+        },
+        body: JSON.stringify({stats: this.answers, lives: this.state.lives})
+      })
+        .then((response) => response.text())
+        .then(() => {
+          App.showStatistic(window.gameUsername);
+        });
     }
   }
 }

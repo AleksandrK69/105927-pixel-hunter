@@ -53,7 +53,7 @@ export default class RulesView extends AbstractView {
 
     form.addEventListener(`submit`, (event) => {
       event.preventDefault();
-      this.onMoveToNextScreen();
+      this.onMoveToNextScreen(userNameInput.value.trim());
     });
 
     this.element.querySelector(`.back`).addEventListener(`click`, () => {

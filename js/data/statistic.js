@@ -1,6 +1,6 @@
 import {LEVELS_COUNT, ANSWERS_VALUES, BONUSES_COST} from '../constants';
 
-export const calculateStatistic = (state, answers) => {
+export const calculateStatistic = ({lives, answers}) => {
   if (answers.length < LEVELS_COUNT) {
     return {
       answers,
@@ -16,7 +16,7 @@ export const calculateStatistic = (state, answers) => {
   const fastAnswersCount = answers.filter((answer) => answer === ANSWERS_VALUES.fast).length;
   const slowAnswersCount = answers.filter((answer) => answer === ANSWERS_VALUES.slow).length;
   const correctAnswersCount = answers.filter((answer) => answer !== ANSWERS_VALUES.wrong).length;
-  const livesCount = state.lives;
+  const livesCount = lives;
 
   const fastBonus = fastAnswersCount * BONUSES_COST[ANSWERS_VALUES.fast];
   const livesBonus = livesCount * BONUSES_COST.lives;
@@ -63,16 +63,4 @@ export const calculateStatistic = (state, answers) => {
       score
     }
   };
-};
-
-export const initStatisticStore = () => {
-  window.gameStatistic = [];
-};
-
-export const addGameStatistic = (statistic) => {
-  window.gameStatistic.unshift(statistic);
-};
-
-export const getGameStatistic = () => {
-  return window.gameStatistic;
 };

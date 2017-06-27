@@ -11,7 +11,8 @@ export default class Rules {
   init() {
     renderScreen(this.view);
 
-    this.view.onMoveToNextScreen = () => {
+    this.view.onMoveToNextScreen = (username) => {
+      window.gameUsername = username;
       App.showGame();
     };
 
