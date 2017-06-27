@@ -79,7 +79,7 @@ export default class Game {
       this.timer.stop();
       this.timer.clear();
 
-      fetch(API.statistic.replace(`:username`, window.gameUsername), {
+      fetch(API.statistic.replace(`:username:`, encodeURIComponent(window.gameUsername)), {
         method: `post`,
         headers: {
           'Accept': `application/json`,

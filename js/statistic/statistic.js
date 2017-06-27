@@ -13,7 +13,7 @@ export default class Statistic {
       return;
     }
 
-    fetch(API.statistic.replace(`:username`, username))
+    fetch(API.statistic.replace(`:username:`, encodeURIComponent(username)))
       .then((response) => response.json())
       .then((data) => {
         const statistic = [];
@@ -25,7 +25,7 @@ export default class Statistic {
 
         this.view = new StatisticView({
           state,
-          user: username,
+          user: decodeURI(username),
           statistic
         });
 
