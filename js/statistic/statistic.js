@@ -13,7 +13,7 @@ export default class Statistic {
       return;
     }
 
-    fetch(API.statistic.replace(`:username:`, encodeURIComponent(username)))
+    fetch(API.statistic.replace(`:username:`, username))
       .then((response) => response.json())
       .then((data) => {
         const statistic = [];

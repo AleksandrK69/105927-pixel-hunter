@@ -42,6 +42,19 @@ export default class GameView extends AbstractView {
       formChooseType.addEventListener(`change`, () => {
         const answer1 = formChooseType.querySelector(`[name="question1"]:checked`);
         const answer2 = formChooseType.querySelector(`[name="question2"]:checked`);
+
+        if (answer1) {
+          Array.from(formChooseType.querySelectorAll(`[name="question1"]`), (checkboxNode) => {
+            checkboxNode.setAttribute(`disabled`, `disabled`);
+          });
+        }
+
+        if (answer2) {
+          Array.from(formChooseType.querySelectorAll(`[name="question2"]`), (checkboxNode) => {
+            checkboxNode.setAttribute(`disabled`, `disabled`);
+          });
+        }
+
         if (answer1 && answer2) {
           this.onChooseType(answer1.value, answer2.value);
         }
