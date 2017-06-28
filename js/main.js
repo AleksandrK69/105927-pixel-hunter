@@ -44,6 +44,15 @@ class App {
         .then((response) => response.json())
         .then((result) => {
           window.gameQuestions = result;
+
+          // прелоад всех картинок для игры
+          result.forEach((question) => {
+            question.answers.forEach((answer) => {
+              const currentImage = new Image();
+              currentImage.src = answer.image.url;
+            });
+          });
+
           this.init();
         });
     } else {
