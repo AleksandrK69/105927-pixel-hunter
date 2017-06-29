@@ -3,6 +3,7 @@ import Greeting from './greeting/greeting';
 import Rules from './rules/rules';
 import Game from './game/game';
 import Statistic from './statistic/statistic';
+import {preloadImages} from './utils';
 import {API} from './constants';
 
 const ControllerId = {
@@ -46,14 +47,14 @@ class App {
           window.gameQuestions = result;
 
           // прелоад всех картинок для игры
+          const allImagesForGame = [];
           result.forEach((question) => {
             question.answers.forEach((answer) => {
-              const currentImage = new Image();
-              currentImage.src = answer.image.url;
+              allImagesForGame.push(answer.image.url);
             });
           });
 
-          this.init();
+          preloadImages(allImagesForGame, this.init.bind(this));
         });
     } else {
       this.init();

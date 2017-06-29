@@ -24,7 +24,7 @@ export default class StatisticView extends AbstractView {
         ${this.renderSummaryStatistic()}
       </div>
       ${footer}
-  `;
+    `;
   }
 
   bind() {
@@ -38,11 +38,13 @@ export default class StatisticView extends AbstractView {
       return `Вы пока не сыграли ни одной игры.`;
     }
 
-    return `<div>
-      ${this.statistic.map((currentStatistic, index) => {
-        return showStatisticGame(currentStatistic, index);
-      }).join(``)}
-    </div>`;
+    return `
+      <div>
+        ${this.statistic.map((currentStatistic, index) => {
+          return showStatisticGame(currentStatistic, index);
+        }).join(``)}
+      </div>
+    `;
   }
 
   onBackToIntro() {

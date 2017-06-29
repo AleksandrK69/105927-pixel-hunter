@@ -27,13 +27,13 @@ export default class GameView extends AbstractView {
         lives: this.lives,
         timer: this.timer
       })}
-    <div class="game">
-      <p class="game__task">${this.title}</p>
-      ${this.getQuestionView()}
-      <div class="stats">${showStatisticSummary(this.answers)}</div>
-    </div>
-    ${footer}
-  `;
+      <div class="game">
+        <p class="game__task">${this.title}</p>
+        ${this.getQuestionView()}
+        <div class="stats">${showStatisticSummary(this.answers)}</div>
+      </div>
+      ${footer}
+    `;
   }
 
   bind() {
