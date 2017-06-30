@@ -1,17 +1,24 @@
-export function preloadImages(images, onLoad) {
-  const imagesCount = images.length;
-  let imagesLoadedCount = 0;
-
-  const onLoadImage = () => {
-    imagesLoadedCount++;
-    if (imagesLoadedCount === imagesCount) {
-      onLoad();
-    }
-  };
-
-  images.forEach((image) => {
-    const currentImage = new Image();
-    currentImage.onload = onLoadImage;
-    currentImage.src = image;
+const preloadImage = (url) => {
+  return new Promise((resolve) => {
+    const image = new Image();
+    image.addEventListener(`load`, () => {
+      resolve();
+    });
+    image.src = url;
   });
+};
+
+export function preloadImages(images) {
+  return Promise.all(images.map(preloadImage));
+}
+
+export function generateImages(questions) {
+  const allImagesForGame = [];
+  questions.forEach((question) => {
+    question.answers.forEach(({image}) => {
+      allImagesForGame.push(image.url);
+    });
+  });
+
+  return allImagesForGame;
 }

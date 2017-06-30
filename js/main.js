@@ -3,7 +3,7 @@ import Greeting from './greeting/greeting';
 import Rules from './rules/rules';
 import Game from './game/game';
 import Statistic from './statistic/statistic';
-import {preloadImages} from './utils';
+import {preloadImages, generateImages} from './utils';
 import {initialState, setQuestions} from './data/state';
 import {API} from './constants';
 
@@ -50,16 +50,10 @@ class App {
         this.setState(setQuestions(this.state, result));
 
         // прелоад всех картинок для игры
-        const allImagesForGame = [];
-        result.forEach((question) => {
-          question.answers.forEach(({image: url}) => {
-            allImagesForGame.push(url);
-          });
+        const allImagesForGame = generateImages(result);
+        preloadImages(allImagesForGame).then(() => {
+          this.init();
         });
-
-        this.init();
-        // временно for dev
-        preloadImages(allImagesForGame, () => {});
       });
   }
 
