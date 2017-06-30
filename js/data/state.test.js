@@ -1,5 +1,5 @@
 import assert from 'assert';
-import {initialState as state, setLevel, setLives, setTimer} from './state';
+import {initialState as state, setLevel, setLives, setTimer, setUserName, setQuestions} from './state';
 import {LEVELS_COUNT, LIVES_COUNT} from '../constants';
 
 describe(`Game`, () => {
@@ -65,6 +65,42 @@ describe(`Game`, () => {
 
     it(`should have 0 timer on start`, () => {
       assert.equal(0, state.timer);
+    });
+  });
+
+  describe(`#UserName`, () => {
+    it(`should update userName`, () => {
+      assert.equal(`Имя пользователя`, setUserName(state, `Имя пользователя`).userName);
+    });
+
+    it(`shouldn't update userName to non-string`, () => {
+      const updateUserName = () => {
+        setUserName(state, {userName: `Иван`});
+      };
+      assert.throws(updateUserName);
+    });
+
+    it(`shouldn't update userName to empty string`, () => {
+      const wrongUserName = {userName: `   `};
+      const updateUserName = () => {
+        setUserName(state, wrongUserName);
+      };
+      assert.throws(updateUserName);
+    });
+
+    it(`should have empty userName on start`, () => {
+      assert.equal(``, state.userName);
+    });
+  });
+
+  describe(`#Questions`, () => {
+    it(`should update questions`, () => {
+      const question = [{title: `Question 1`}, {title: `Question 2`}];
+      assert.deepEqual(question, setQuestions(state, question).questions);
+    });
+
+    it(`should have empty questions on start`, () => {
+      assert.deepEqual([], state.questions);
     });
   });
 });

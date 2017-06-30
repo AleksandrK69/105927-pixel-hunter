@@ -11,12 +11,12 @@ export default class Game {
   constructor(state = initialState, answers = []) {
     this.state = state;
     this.answers = answers;
-    this.question = window.gameQuestions[this.state.level];
+    this.question = this.state.questions[this.state.level];
 
     this.view = new GameView({
       lives: this.state.lives,
       answers: this.answers,
-      question: window.gameQuestions[this.state.level]
+      question: this.state.questions[this.state.level]
     });
 
     this.timer = timer();
@@ -67,7 +67,7 @@ export default class Game {
     if (this.state.lives > 0 && nextLevel < LEVELS_COUNT) {
       // если возможен переход на следующий шаг - игра продолжается
       this.state = setLevel(this.state, nextLevel);
-      this.question = window.gameQuestions[nextLevel];
+      this.question = this.state.questions[nextLevel];
       this.view = new GameView({
         lives: this.state.lives,
         answers: this.answers,
@@ -79,7 +79,7 @@ export default class Game {
       this.timer.stop();
       this.timer.clear();
 
-      fetch(API.statistic.replace(`:username:`, encodeURIComponent(window.gameUsername)), {
+      fetch(API.statistic.replace(`:username:`, encodeURIComponent(this.state.userName)), {
         method: `post`,
         headers: {
           'Accept': `application/json`,
@@ -89,7 +89,7 @@ export default class Game {
       })
         .then((response) => response.text())
         .then(() => {
-          App.showStatistic(window.gameUsername);
+          App.showStatistic(this.state.userName);
         });
     }
   }

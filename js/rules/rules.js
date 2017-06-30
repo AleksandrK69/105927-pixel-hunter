@@ -1,10 +1,11 @@
 import renderScreen from '../render-screen';
 import RulesView from './rules-view';
 import App from '../main';
-import {initialState} from '../data/state';
+import {initialState, setUserName} from '../data/state';
 
 export default class Rules {
   constructor(state = initialState) {
+    this.state = state;
     this.view = new RulesView(state);
   }
 
@@ -12,7 +13,7 @@ export default class Rules {
     renderScreen(this.view);
 
     this.view.onMoveToNextScreen = (username) => {
-      window.gameUsername = username;
+      App.setState(setUserName(this.state, username));
       App.showGame();
     };
 

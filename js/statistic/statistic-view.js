@@ -41,7 +41,15 @@ export default class StatisticView extends AbstractView {
     return `
       <div>
         ${this.statistic.map((currentStatistic, index) => {
-          return showStatisticGame(currentStatistic, index);
+          return showStatisticGame({
+            answers: currentStatistic.answers,
+            pointsMultiply: currentStatistic.pointsMultiply,
+            totalPoints: currentStatistic.totalPoints,
+            bonuses: currentStatistic.bonuses,
+            success: currentStatistic.totalResult.success,
+            score: currentStatistic.totalResult.score,
+            index: index + 1
+          });
         }).join(``)}
       </div>
     `;

@@ -1,9 +1,9 @@
 import StatisticGameView from './statistic-game-view';
 import showStatisticSummary from './statistic-summary';
 
-export default ({answers, pointsMultiply, totalPoints, bonuses, totalResult: {success, score}}, index) => {
+export default ({answers, pointsMultiply, totalPoints, bonuses, success, score, index}) => {
   const statistic = new StatisticGameView({
-    index: index + 1,
+    index,
     bonuses,
     totalPoints,
     pointsMultiply: pointsMultiply ? `× ${pointsMultiply}` : `&mdash;`,
