@@ -3,7 +3,9 @@ import {LEVELS_COUNT, LIVES_COUNT} from '../constants';
 export const initialState = Object.freeze({
   level: 0,
   lives: LIVES_COUNT,
-  timer: 0
+  timer: 0,
+  userName: ``,
+  questions: []
 });
 
 /**
@@ -57,5 +59,34 @@ export const setTimer = (currentState, timer) => {
   const newState = {};
   Object.assign(newState, currentState);
   newState.timer = timer;
+  return newState;
+};
+
+/**
+ * Обновляет имя пользователя
+ * @param {object} currentState
+ * @param {string} userName
+ * @return {object} - новое состояние игры
+ */
+export const setUserName = (currentState, userName) => {
+  if (userName.trim === `` || typeof userName !== `string`) {
+    throw new Error(`Wrong userName. It should be non-empty string`);
+  }
+  const newState = {};
+  Object.assign(newState, currentState);
+  newState.userName = userName;
+  return newState;
+};
+
+/**
+ * Обновляет список вопросов
+ * @param {object} currentState
+ * @param {array} questions
+ * @return {object} - новое состояние игры
+ */
+export const setQuestions = (currentState, questions) => {
+  const newState = {};
+  Object.assign(newState, currentState);
+  newState.questions = questions;
   return newState;
 };

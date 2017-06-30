@@ -3,7 +3,8 @@ import Greeting from './greeting/greeting';
 import Rules from './rules/rules';
 import Game from './game/game';
 import Statistic from './statistic/statistic';
-import {preloadImages} from './utils';
+import {preloadImages, generateImages} from './utils';
+import {initialState, setQuestions} from './data/state';
 import {API} from './constants';
 
 const ControllerId = {
@@ -36,34 +37,33 @@ class App {
       [ControllerId.STATISTIC]: Statistic
     };
 
+    this.state = {};
+    this.setState(initialState);
+
     window.onhashchange = () => {
       this.changeController(getControllerIdFromHash(location.hash));
     };
 
-    if (!window.gameQuestions) {
-      fetch(API.questions)
-        .then((response) => response.json())
-        .then((result) => {
-          window.gameQuestions = result;
+    fetch(API.questions)
+      .then((response) => response.json())
+      .then((result) => {
+        this.setState(setQuestions(this.state, result));
 
-          // прелоад всех картинок для игры
-          const allImagesForGame = [];
-          result.forEach((question) => {
-            question.answers.forEach((answer) => {
-              allImagesForGame.push(answer.image.url);
-            });
-          });
-
-          preloadImages(allImagesForGame, this.init.bind(this));
+        // прелоад всех картинок для игры
+        const allImagesForGame = generateImages(result);
+        preloadImages(allImagesForGame).then(() => {
+          this.init();
         });
-    } else {
-      this.init();
-    }
+      });
   }
 
 
   init() {
     this.changeController(getControllerIdFromHash(location.hash));
+  }
+
+  setState(state) {
+    this.state = state;
   }
 
   changeController(route = ``) {
@@ -74,7 +74,7 @@ class App {
     }
 
     try {
-      return new Controller(getHashParam(location.hash)).init();
+      return new Controller(this.state).init();
     } catch (e) {
       throw new Error(`Wrong Controller`);
     }

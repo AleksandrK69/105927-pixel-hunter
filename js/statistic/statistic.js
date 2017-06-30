@@ -6,14 +6,14 @@ import {calculateStatistic} from '../data/statistic';
 import {API} from '../constants';
 
 export default class Statistic {
-  constructor(username, state = initialState) {
+  constructor(userName, state = initialState) {
     // если не указан пользователь - редирект на начальную страницу
-    if (!username) {
+    if (!userName) {
       App.showIntro();
       return;
     }
 
-    fetch(API.statistic.replace(`:username:`, username))
+    fetch(API.statistic.replace(`:username:`, userName))
       .then((response) => response.json())
       .then((data) => {
         const statistic = [];
@@ -25,7 +25,7 @@ export default class Statistic {
 
         this.view = new StatisticView({
           state,
-          user: decodeURI(username),
+          user: decodeURI(userName),
           statistic
         });
 
